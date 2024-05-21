@@ -1,7 +1,9 @@
 import { RouteObject, Navigate } from 'react-router-dom';
+
 import Users from './pages/users/Users';
 import NewPlace from './pages/places/NewPlace';
-import BaseLayout from '../components/shared/Layout/Layout';
+import BaseLayout from '../shared/Layout/Layout';
+import UserPlaces from './pages/places/UserPlaces';
 
 export const routes: RouteObject[] = [
   {
@@ -9,17 +11,21 @@ export const routes: RouteObject[] = [
     children: [
       {
         path: '/',
-        index: true,
         element: <Users />,
       },
       {
-        path: '/places/new',
-        element: <NewPlace />,
+        path: ':userId/places',
+        element: <UserPlaces />,
+        exact: true,
       },
       {
-        path: '*',
-        element: <Navigate to='/' replace />,
+        path: 'places/new',
+        element: <NewPlace />,
       },
+      // {
+      //   path: '*',
+      //   element: <Navigate to='/' replace />,
+      // },
     ],
   },
 ];
