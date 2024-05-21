@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import './Map.css';
+import './GoogleMap.css';
 
 const GoogleMap = (props) => {
   const mapRef = useRef(null);
