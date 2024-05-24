@@ -1,9 +1,10 @@
 import { RouteObject, Navigate } from 'react-router-dom';
 
 import Users from './pages/users/Users';
-import NewPlace from './pages/places/NewPlace';
+import NewPlace from './pages/places/NewPlace/NewPlace';
 import BaseLayout from '../shared/Layout/Layout';
-import UserPlaces from './pages/places/UserPlaces';
+import UserPlaces from './pages/places/UserPlaces/UserPlaces';
+import UpdatePlace from './pages/places/UpdatePlace/UpdatePlace';
 
 export const routes: RouteObject[] = [
   {
@@ -16,16 +17,19 @@ export const routes: RouteObject[] = [
       {
         path: ':userId/places',
         element: <UserPlaces />,
-        exact: true,
       },
       {
         path: 'places/new',
         element: <NewPlace />,
       },
-      // {
-      //   path: '*',
-      //   element: <Navigate to='/' replace />,
-      // },
+      {
+        path: 'places/:placeId',
+        element: <UpdatePlace />,
+      },
+      {
+        path: '*',
+        element: <Navigate to='/' replace />,
+      },
     ],
   },
 ];
