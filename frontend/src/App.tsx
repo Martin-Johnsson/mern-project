@@ -11,6 +11,7 @@ const App = () => {
   let router;
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   if (isLoggedIn) {
     router = createBrowserRouter(AuthenticatedRoutes, {});
@@ -18,17 +19,24 @@ const App = () => {
     router = createBrowserRouter(UnAuthenticatedRoutes, {});
   }
 
-  const login = useCallback(() => {
+  const login = useCallback((userId) => {
     setIsLoggedIn(true);
+    setUserId(userId);
   }, []);
 
   const logout = useCallback(() => {
     setIsLoggedIn(false);
+    setUserId(null);
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+      value={{
+        isLoggedIn: isLoggedIn,
+        login: login,
+        userId: userId,
+        logout: logout,
+      }}
     >
       <RouterProvider router={router} />
     </AuthContext.Provider>
