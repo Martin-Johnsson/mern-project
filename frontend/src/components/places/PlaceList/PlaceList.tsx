@@ -21,12 +21,13 @@ const PlaceList = (props) => {
             <PlaceItem
               key={place.id}
               id={place.id}
-              image={place.imageUrl}
+              image={place.image}
               title={place.title}
-              desription={place.description}
+              description={place.description}
               address={place.address}
-              creatorID={place.creator}
+              creatorId={place.creator}
               coordinates={place.location}
+              onDelete={props.onDelete}
             />
           );
         })}
