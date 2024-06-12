@@ -10,17 +10,47 @@ import {
 import Card from '../../../shared/components/UIElements/Card/Card';
 import { useState, useContext } from 'react';
 import { AuthContext } from '../../../shared/context/auth-context';
+import LoadingSpinner from '../../../shared/components/UIElements/LoadingSpinner/LoadingSpinner';
+import ErrorModal from '../../../shared/components/UIElements/ErrorModal/ErrorModal';
+import { useHttpClient } from '../../../shared/hooks/Http-hook';
 
 const Auth = () => {
   const auth = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-  const onSubmitHandler = (event) => {
+  const authSubmitHandler = async (event) => {
     event.preventDefault();
 
-    console.log(formState.inputs);
     if (isLoginMode) {
-      auth.login();
+      try {
+        const responseData = await sendRequest(
+          'http://localhost:3000/api/users/login',
+          'POST',
+          JSON.stringify({
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          }),
+          { 'Content-Type': 'application/json' }
+        );
+        auth.login(responseData.user.id);
+      } catch (err) {}
+    } else {
+      try {
+        const responseData = await sendRequest(
+          'http://localhost:3000/api/users/signup',
+          'POST',
+          JSON.stringify({
+            name: formState.inputs.name.value,
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          }),
+          {
+            'Content-Type': 'application/json',
+          }
+        );
+        auth.login(responseData.user.id);
+      } catch (err) {}
     }
   };
 
@@ -63,51 +93,54 @@ const Auth = () => {
   };
 
   return (
-    <Card className='authentication'>
-      <h2>{isLoginMode ? 'Login' : 'Signup'} </h2>
-      <form className='place-form' onSubmit={onSubmitHandler}>
-        {!isLoginMode && (
-          <Input
-            id='name'
-            element='input'
-            label='Name'
-            type='text'
-            errorText='Please provide a name.'
-            validators={[VALIDATOR_REQUIRE()]}
-            onInput={inputHandler}
-          />
-        )}
+    <>
+      <ErrorModal error={error} onClear={clearError} />
+      <Card className='authentication'>
+        {isLoading && <LoadingSpinner asOverlay />}
+        <h2>{isLoginMode ? 'Login' : 'Signup'} </h2>
+        <form className='place-form' onSubmit={authSubmitHandler}>
+          {!isLoginMode && (
+            <Input
+              id='name'
+              element='input'
+              label='Name'
+              type='text'
+              errorText='Please provide a name.'
+              validators={[VALIDATOR_REQUIRE()]}
+              onInput={inputHandler}
+            />
+          )}
 
-        <Input
-          element='input'
-          id='email'
-          type='email'
-          label='Email'
-          validators={[VALIDATOR_EMAIL()]}
-          errorText='Please enter your email address.'
-          onInput={inputHandler}
-        ></Input>
-        <Input
-          element='input'
-          id='password'
-          type='password'
-          label='Password'
-          validators={[VALIDATOR_MINLENGTH(8)]}
-          errorText='Please enter your password, at least 8 characters'
-          onInput={inputHandler}
-        ></Input>
-        <Button danger to='/'>
-          CANCEL
+          <Input
+            element='input'
+            id='email'
+            type='email'
+            label='Email'
+            validators={[VALIDATOR_EMAIL()]}
+            errorText='Please enter your email address.'
+            onInput={inputHandler}
+          ></Input>
+          <Input
+            element='input'
+            id='password'
+            type='password'
+            label='Password'
+            validators={[VALIDATOR_MINLENGTH(8)]}
+            errorText='Please enter your password, at least 8 characters'
+            onInput={inputHandler}
+          ></Input>
+          <Button disabled={!formState.isValid}>
+            {isLoginMode ? 'LOGIN' : 'SIGNUP'}
+          </Button>
+          <Button danger to='/'>
+            CANCEL
+          </Button>
+        </form>
+        <Button inverse onClick={switchModeHandler}>
+          Switch to {!isLoginMode ? 'LOGIN' : 'SIGNUP'}
         </Button>
-        <Button disabled={!formState.isValid}>
-          {isLoginMode ? 'LOGIN' : 'SIGNUP'}
-        </Button>
-      </form>
-      <Button inverse onClick={switchModeHandler}>
-        Switch to {!isLoginMode ? 'LOGIN' : 'SIGNUP'}
-      </Button>
-    </Card>
+      </Card>
+    </>
   );
 };
-
 export default Auth;
