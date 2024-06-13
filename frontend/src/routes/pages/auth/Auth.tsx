@@ -13,6 +13,7 @@ import { AuthContext } from '../../../shared/context/auth-context';
 import LoadingSpinner from '../../../shared/components/UIElements/LoadingSpinner/LoadingSpinner';
 import ErrorModal from '../../../shared/components/UIElements/ErrorModal/ErrorModal';
 import { useHttpClient } from '../../../shared/hooks/Http-hook';
+import ImageUpload from '../../../shared/components/FormElements/ImageUpload/ImageUpload';
 
 const Auth = () => {
   const auth = useContext(AuthContext);
@@ -37,17 +38,15 @@ const Auth = () => {
       } catch (err) {}
     } else {
       try {
+        const formData = new FormData();
+        formData.append('email', formState.inputs.email.value);
+        formData.append('name', formState.inputs.name.value);
+        formData.append('password', formState.inputs.password.value);
+        formData.append('image', formState.inputs.image.value);
         const responseData = await sendRequest(
           'http://localhost:3000/api/users/signup',
           'POST',
-          JSON.stringify({
-            name: formState.inputs.name.value,
-            email: formState.inputs.email.value,
-            password: formState.inputs.password.value,
-          }),
-          {
-            'Content-Type': 'application/json',
-          }
+          formData
         );
         auth.login(responseData.user.id);
       } catch (err) {}
@@ -74,6 +73,7 @@ const Auth = () => {
         {
           ...formState.inputs,
           name: undefined,
+          image: undefined,
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
@@ -83,6 +83,10 @@ const Auth = () => {
           ...formState.inputs,
           name: {
             value: '',
+            isValid: false,
+          },
+          image: {
+            value: null,
             isValid: false,
           },
         },
@@ -100,15 +104,18 @@ const Auth = () => {
         <h2>{isLoginMode ? 'Login' : 'Signup'} </h2>
         <form className='place-form' onSubmit={authSubmitHandler}>
           {!isLoginMode && (
-            <Input
-              id='name'
-              element='input'
-              label='Name'
-              type='text'
-              errorText='Please provide a name.'
-              validators={[VALIDATOR_REQUIRE()]}
-              onInput={inputHandler}
-            />
+            <>
+              <Input
+                id='name'
+                element='input'
+                label='Name'
+                type='text'
+                errorText='Please provide a name.'
+                validators={[VALIDATOR_REQUIRE()]}
+                onInput={inputHandler}
+              />
+              <ImageUpload id='image' center onInput={inputHandler} />
+            </>
           )}
 
           <Input

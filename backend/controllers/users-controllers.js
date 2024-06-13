@@ -52,8 +52,7 @@ const createUser = async (req, res, next) => {
   const createdUser = new User({
     name,
     email,
-    image:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Rathaus_and_Marienplatz_from_Peterskirche_-_August_2006.jpg/800px-Rathaus_and_Marienplatz_from_Peterskirche_-_August_2006.jpg',
+    image: req.file.path,
     password,
     places: [],
   });
@@ -91,7 +90,10 @@ const loginUser = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ message: 'Logged in!' });
+  res.status(200).json({
+    message: 'Logged in!',
+    user: existingUser.toObject({ getters: true }),
+  });
 };
 
 exports.getUsers = getUsers;
