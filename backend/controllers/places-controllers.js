@@ -2,7 +2,7 @@ const HttpError = require('../models/http-error');
 const Place = require('../models/place');
 const User = require('../models/user');
 const mongoose = require('mongoose');
-
+const fs = require('fs');
 const { validationResult } = require('express-validator');
 
 const getCoordsForAddress = require('../util/location');
@@ -84,8 +84,7 @@ const createPlace = async (req, res, next) => {
     description,
     address,
     location: coordinates,
-    image:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Rathaus_and_Marienplatz_from_Peterskirche_-_August_2006.jpg/800px-Rathaus_and_Marienplatz_from_Peterskirche_-_August_2006.jpg',
+    image: req.file.path,
     creator,
   });
 
@@ -184,6 +183,8 @@ const deletePlaceById = async (req, res, next) => {
     return next(error);
   }
 
+  const imagePath = place.image;
+
   console.log(place);
 
   try {
@@ -205,6 +206,10 @@ const deletePlaceById = async (req, res, next) => {
     );
     return next(error);
   }
+
+  fs.unlink(imagePath, (err) => {
+    console.error(err);
+  });
 
   res.status(200).json({ message: 'Deleted place.' });
 };

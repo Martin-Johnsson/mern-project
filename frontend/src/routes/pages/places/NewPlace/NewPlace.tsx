@@ -12,6 +12,7 @@ import { AuthContext } from '../../../../shared/context/auth-context';
 import LoadingSpinner from '../../../../shared/components/UIElements/LoadingSpinner/LoadingSpinner';
 import ErrorModal from '../../../../shared/components/UIElements/ErrorModal/ErrorModal';
 import { useNavigate } from 'react-router-dom';
+import ImageUpload from '../../../../shared/components/FormElements/ImageUpload/ImageUpload';
 const NewPlace = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
@@ -30,6 +31,10 @@ const NewPlace = () => {
         value: '',
         isValid: false,
       },
+      image: {
+        value: null,
+        isValid: false,
+      },
     },
     false
   );
@@ -37,17 +42,13 @@ const NewPlace = () => {
   const placeSubmitHandler = async (event) => {
     event.preventDefault();
     try {
-      await sendRequest(
-        'http://localhost:3000/api/places',
-        'POST',
-        JSON.stringify({
-          title: formState.inputs.title.value,
-          description: formState.inputs.description.value,
-          address: formState.inputs.address.value,
-          creator: auth.userId,
-        }),
-        { 'Content-Type': 'application/json' }
-      );
+      const formData = new FormData();
+      formData.append('title', formState.inputs.title.value);
+      formData.append('description', formState.inputs.description.value);
+      formData.append('address', formState.inputs.address.value);
+      formData.append('creator', auth.userId);
+      formData.append('image', formState.inputs.image.value);
+      await sendRequest('http://localhost:3000/api/places', 'POST', formData);
       navigate('/');
     } catch (err) {}
   };
@@ -61,6 +62,12 @@ const NewPlace = () => {
             <LoadingSpinner asOverlay />
           </div>
         )}
+        <ImageUpload
+          id='image'
+          center
+          onInput={inputHandler}
+          errorText='Please provide an image.'
+        />
         <Input
           id='title'
           element={'input'}
