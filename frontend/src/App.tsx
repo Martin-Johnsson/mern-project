@@ -10,29 +10,30 @@ import { AuthContext } from './shared/context/auth-context';
 const App = () => {
   let router;
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
 
-  if (isLoggedIn) {
+  const login = useCallback((userId, token) => {
+    setToken(token);
+    setUserId(userId);
+  }, []);
+
+  const logout = useCallback(() => {
+    setToken(null);
+    setUserId(null);
+  }, []);
+
+  if (token) {
     router = createBrowserRouter(AuthenticatedRoutes, {});
   } else {
     router = createBrowserRouter(UnAuthenticatedRoutes, {});
   }
 
-  const login = useCallback((userId) => {
-    setIsLoggedIn(true);
-    setUserId(userId);
-  }, []);
-
-  const logout = useCallback(() => {
-    setIsLoggedIn(false);
-    setUserId(null);
-  }, []);
-
   return (
     <AuthContext.Provider
       value={{
-        isLoggedIn: isLoggedIn,
+        isLoggedIn: !!token,
+        token: token,
         login: login,
         userId: userId,
         logout: logout,

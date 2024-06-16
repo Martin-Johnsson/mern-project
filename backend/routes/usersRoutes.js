@@ -6,13 +6,6 @@ const fileUpload = require('../middleware/file-upload');
 
 router.get('/', usersController.getUsers);
 
-// router.get('/:userId', (req, res, next) => {
-//   const userId = req.params.userId;
-
-//   const user = DUMMY_USERS.find((user) => user.id === userId);
-
-//   res.json({ user });
-// });
 router.post(
   '/signup',
   fileUpload.single('image'),
