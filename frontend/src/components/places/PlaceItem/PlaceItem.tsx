@@ -35,6 +35,7 @@ const PlaceItem = (props) => {
         null,
         {
           'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + auth.token,
         }
       );
     } catch (err) {}
