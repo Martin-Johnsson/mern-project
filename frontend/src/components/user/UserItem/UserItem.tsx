@@ -5,13 +5,14 @@ import Card from '../../../shared/components/UIElements/Card/Card';
 import { Link } from 'react-router-dom';
 
 const UserItem = (props) => {
+  const BACKEND_ASSET_URL = import.meta.env.VITE_BACKEND_ASSET_URL;
   return (
     <li className='user-item'>
       <Card className='user-item__content'>
         <Link to={`/${props.id}/places`}>
           <div className='user-item__image'>
             <Avatar
-              image={`http://localhost:3000/${props.image}`}
+              image={`${BACKEND_ASSET_URL}/${props.image}`}
               alt={props.name}
             />
           </div>

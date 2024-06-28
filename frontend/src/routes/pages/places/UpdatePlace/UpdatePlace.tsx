@@ -16,6 +16,7 @@ import Card from '../../../../shared/components/UIElements/Card/Card';
 import { AuthContext } from '../../../../shared/context/auth-context';
 
 const UpdatePlace = () => {
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const placeId = useParams().placeId;
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [loadedPlace, setLoadedPlace] = useState([]);
@@ -40,7 +41,7 @@ const UpdatePlace = () => {
     const loadPlace = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:3000/api/places/${placeId}`
+          BACKEND_URL + `/places/${placeId}`
         );
         setLoadedPlace(responseData.place);
 
@@ -69,7 +70,7 @@ const UpdatePlace = () => {
 
     try {
       await sendRequest(
-        `http://localhost:3000/api/places/${placeId}`,
+        BACKEND_URL + `/places/${placeId}`,
         'PATCH',
         JSON.stringify({
           title: formState.inputs.title.value,

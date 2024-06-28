@@ -5,15 +5,14 @@ import LoadingSpinner from '../../../shared/components/UIElements/LoadingSpinner
 import { useHttpClient } from '../../../shared/hooks/Http-hook.ts';
 
 const Users = () => {
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [loadedUsers, setLoadedUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const responseData = await sendRequest(
-          'http://localhost:3000/api/users'
-        );
+        const responseData = await sendRequest(BACKEND_URL + '/users');
         await setLoadedUsers(responseData.users);
       } catch (err) {}
     };

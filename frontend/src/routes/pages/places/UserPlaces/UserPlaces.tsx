@@ -6,6 +6,8 @@ import LoadingSpinner from '../../../../shared/components/UIElements/LoadingSpin
 import ErrorModal from '../../../../shared/components/UIElements/ErrorModal/ErrorModal';
 
 const UserPlaces = () => {
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
   const userId = useParams().userId;
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [loadedPlaces, setLoadedPlaces] = useState([]);
@@ -14,7 +16,7 @@ const UserPlaces = () => {
     const fetchUserPlaces = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:3000/api/places/user/${userId}`
+          BACKEND_URL + `/places/user/${userId}`
         );
         setLoadedPlaces(responseData.places);
       } catch (err) {}

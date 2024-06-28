@@ -10,6 +10,9 @@ import ErrorModal from '../../../shared/components/UIElements/ErrorModal/ErrorMo
 import LoadingSpinner from '../../../shared/components/UIElements/LoadingSpinner/LoadingSpinner';
 
 const PlaceItem = (props) => {
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const BACKEND_ASSET_URL = import.meta.env.VITE_BACKEND_ASSET_URL;
+
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const openMapHandler = () => setShowMap(true);
@@ -29,15 +32,10 @@ const PlaceItem = (props) => {
     setShowConfirmModal(false);
 
     try {
-      await sendRequest(
-        `http://localhost:3000/api/places/${props.id}`,
-        'DELETE',
-        null,
-        {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + auth.token,
-        }
-      );
+      await sendRequest(BACKEND_URL + `/places/${props.id}`, 'DELETE', null, {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + auth.token,
+      });
     } catch (err) {}
     props.onDelete(props.id);
   };
@@ -83,7 +81,7 @@ const PlaceItem = (props) => {
           {isLoading && <LoadingSpinner asOverlay />}
           <div className='place-item__image'>
             <img
-              src={`http://localhost:3000/${props.image}`}
+              src={`${BACKEND_ASSET_URL}/${props.image}`}
               alt={props.title}
             />
           </div>

@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react';
 import './index.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { useAuth } from './shared/hooks/auth-hook/auth-hook';
 import {
   AuthenticatedRoutes,
   UnAuthenticatedRoutes,
@@ -9,19 +9,7 @@ import { AuthContext } from './shared/context/auth-context';
 
 const App = () => {
   let router;
-
-  const [token, setToken] = useState(null);
-  const [userId, setUserId] = useState(null);
-
-  const login = useCallback((userId, token) => {
-    setToken(token);
-    setUserId(userId);
-  }, []);
-
-  const logout = useCallback(() => {
-    setToken(null);
-    setUserId(null);
-  }, []);
+  const { token, login, logout, userId } = useAuth();
 
   if (token) {
     router = createBrowserRouter(AuthenticatedRoutes, {});

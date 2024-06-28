@@ -16,6 +16,8 @@ import { useHttpClient } from '../../../shared/hooks/Http-hook';
 import ImageUpload from '../../../shared/components/FormElements/ImageUpload/ImageUpload';
 
 const Auth = () => {
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
   const auth = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -26,7 +28,7 @@ const Auth = () => {
     if (isLoginMode) {
       try {
         const responseData = await sendRequest(
-          'http://localhost:3000/api/users/login',
+          BACKEND_URL + '/users/login',
           'POST',
           JSON.stringify({
             email: formState.inputs.email.value,
@@ -44,7 +46,7 @@ const Auth = () => {
         formData.append('password', formState.inputs.password.value);
         formData.append('image', formState.inputs.image.value);
         const responseData = await sendRequest(
-          'http://localhost:3000/api/users/signup',
+          BACKEND_URL + '/users/signup',
           'POST',
           formData
         );
