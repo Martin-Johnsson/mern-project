@@ -85,7 +85,7 @@ const createUser = async (req, res, next) => {
         userId: createdUser.id,
         email: createdUser.email,
       },
-      'supersecret_dont_share',
+      process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
   } catch (err) {
@@ -96,8 +96,6 @@ const createUser = async (req, res, next) => {
   res
     .status(201)
     .json({ userId: createdUser.id, email: createdUser.email, token: token });
-
-  // res.status(201).json({ user: createdUser.toObject({ getters: true }) });
 };
 
 const loginUser = async (req, res, next) => {
@@ -148,7 +146,7 @@ const loginUser = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: existingUser.id, email: existingUser.email },
-      'supersecret_dont_share',
+      process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
   } catch (err) {
