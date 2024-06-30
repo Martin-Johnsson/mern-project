@@ -1,14 +1,13 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+import express, { NextFunction, Request, Response } from 'express';
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 const placesRoutes = require('./routes/placesRoutes');
 const usersRoutes = require('./routes/usersRoutes');
 const HttpError = require('./models/http-error');
-const fs = require('fs');
-
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 dotenv.config();
 
@@ -18,7 +17,7 @@ app.use(bodyParser.json());
 
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
     'Access-Control-Allow-Headers',
@@ -33,24 +32,34 @@ app.use('/api/places', placesRoutes);
 
 app.use('/api/users', usersRoutes);
 
-app.use((req, res, next) => {
-  const error = new HttpError('Could not find this route.', 404);
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const error: typeof HttpError = new HttpError(
+    'Could not find this route.',
+    404
+  );
   throw error;
 });
 
-app.use((error, req, res, next) => {
-  if (req.file) {
-    fs.unlink(req.file.path, (err) => {
-      console.log(err);
-    });
-  }
-  if (res.headerSent) {
-    return next(error);
-  }
+app.use(
+  (
+    error: typeof HttpError,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    if (req.file) {
+      fs.unlink(req.file.path, (err: typeof HttpError) => {
+        console.log(err);
+      });
+    }
+    if (res.headersSent) {
+      return next(error);
+    }
 
-  res.status(error.code || 500);
-  res.json({ message: error.message || 'An unknown error occurred.' });
-});
+    res.status(error.code || 500);
+    res.json({ message: error.message || 'An unknown error occurred.' });
+  }
+);
 
 mongoose
   .connect(
@@ -59,6 +68,6 @@ mongoose
   .then(() => {
     app.listen(3000);
   })
-  .catch((err) => {
+  .catch((err: typeof HttpError) => {
     console.error(err);
   });
