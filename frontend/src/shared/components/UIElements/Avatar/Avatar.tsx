@@ -1,6 +1,8 @@
+import { IAvatarProps } from '../../../../types/Interfaces';
+
 import './Avatar.css';
 
-const Avatar = (props) => {
+const Avatar: React.FC<IAvatarProps> = (props) => {
   return (
     <div className={`avatar ${props.className}`} style={props.style}>
       <img

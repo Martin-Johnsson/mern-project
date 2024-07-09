@@ -28,3 +28,11 @@ export interface IInput {
   label: string;
   errorText: string;
 }
+
+export interface IAvatarProps {
+  className?: string;
+  style?: React.CSSProperties;
+  image: string;
+  alt: string;
+  width: string;
+}
