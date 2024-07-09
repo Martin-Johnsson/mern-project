@@ -1,14 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import './ImageUpload.css';
 
 import Button from '../Button/Button';
-const ImageUpload = (props) => {
-  const [file, setFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
-  const [isValid, setIsValid] = useState(false);
+import { IImageUploadProps } from '../../../../types/Interfaces';
 
-  const filePickerRef = useRef();
+const ImageUpload: React.FC<IImageUploadProps> = (props) => {
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isValid, setIsValid] = useState<boolean>(false);
+
+  const filePickerRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (!file) {
@@ -17,17 +19,19 @@ const ImageUpload = (props) => {
     const fileReader = new FileReader();
 
     fileReader.onload = () => {
-      setPreviewUrl(fileReader.result);
+      if (typeof fileReader.result === 'string') {
+        setPreviewUrl(fileReader.result);
+      }
     };
 
     fileReader.readAsDataURL(file);
   }, [file]);
 
-  const pickedHandler = (event) => {
+  const pickedHandler = (event: ChangeEvent<HTMLInputElement>) => {
     let pickedFile;
     let fileIsValid = isValid;
 
-    if (event.target.files && event.target.files.length === 1) {
+    if (event.target?.files && event.target.files.length === 1) {
       pickedFile = event.target.files[0];
       setFile(pickedFile);
       setIsValid(true);
@@ -41,7 +45,7 @@ const ImageUpload = (props) => {
   };
 
   const pickImageHandler = () => {
-    filePickerRef.current.click();
+    filePickerRef.current?.click();
   };
 
   return (
