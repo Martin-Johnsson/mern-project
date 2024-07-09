@@ -1,8 +1,13 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, ChangeEvent } from 'react';
 import './Input.css';
 import { validate } from '../../../util/validators';
+import { IInput, IInputState } from '../../../../types/Interfaces';
+import { TInputAction } from '../../../../types/types';
 
-const inputReducer = (state, action) => {
+const inputReducer = (
+  state: IInputState,
+  action: TInputAction
+): IInputState => {
   switch (action.type) {
     case 'CHANGE':
       return {
@@ -20,21 +25,22 @@ const inputReducer = (state, action) => {
   }
 };
 
-const Input = (props) => {
+const Input: React.FC<IInput> = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: props.initialValue || '',
     isValid: false,
     isTouched: props.initialValid || false,
   });
 
-  const { id, onInput } = props;
-  const { value, isValid } = inputState;
+  const { onInput } = props;
 
   useEffect(() => {
     onInput(props.id, inputState.value, inputState.isValid);
-  }, [id, value, isValid, onInput]);
+  }, [onInput, inputState.value, inputState.isValid, props.id]);
 
-  const changeHandler = (event) => {
+  const changeHandler = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     dispatch({
       type: 'CHANGE',
       val: event.target.value,
