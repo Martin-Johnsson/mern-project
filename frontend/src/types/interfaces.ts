@@ -36,3 +36,7 @@ export interface IAvatarProps {
   alt: string;
   width: string;
 }
+
+export interface IBackdropProps {
+  onClick?: () => React.ReactNode;
+}
