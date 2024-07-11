@@ -1,11 +1,11 @@
-import Backdrop from '../Backdrop/Backdrop';
-import './Modal.css';
 import ReactDOM from 'react-dom';
 
-const ModalOverlay = (props) => {
-  console.log(props.show);
+import Backdrop from '../Backdrop/Backdrop';
+import './Modal.css';
+import { IModalOverlayProps, IModalProps } from '../../../../types/Interfaces';
 
-  const content = (
+const ModalOverlay: React.FC<IModalOverlayProps> = (props) => {
+  const content: JSX.Element = (
     <div className={`modal ${props.className}`} style={props.style}>
       <header className={`modal__header ${props.headerClass}`}>
         <h2>{props.header}</h2>
@@ -24,10 +24,12 @@ const ModalOverlay = (props) => {
       </form>
     </div>
   );
-  return ReactDOM.createPortal(content, document.getElementById('modal-hook'));
+  const modalHook: HTMLElement | null = document.getElementById('modal-hook');
+
+  return ReactDOM.createPortal(content, modalHook!);
 };
 
-const Modal = (props) => {
+const Modal: React.FC<IModalProps> = (props) => {
   return (
     <>
       {props.show && (

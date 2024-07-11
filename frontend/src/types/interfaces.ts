@@ -40,3 +40,26 @@ export interface IAvatarProps {
 export interface IBackdropProps {
   onClick?: () => React.ReactNode;
 }
+
+export interface ICardProps {
+  className?: string;
+  style?: React.CSSProperties;
+  children: React.ReactNode;
+}
+
+export interface IModalOverlayProps {
+  className?: string;
+  style?: React.CSSProperties;
+  headerClass?: string;
+  header?: string;
+  onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
+  contentClass?: string;
+  children: React.ReactNode;
+  footerClass?: React.ReactNode;
+  footer: React.ReactNode;
+}
+
+export interface IModalProps extends IModalOverlayProps {
+  show: boolean;
+  onCancel: () => React.ReactNode;
+}
