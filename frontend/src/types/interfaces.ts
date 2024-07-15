@@ -9,6 +9,14 @@ export interface IUserListProps {
   items: IUserList[];
 }
 
+export interface IUserItemProps {
+  id: string;
+  name: string;
+  image: string;
+  placeCount: number;
+  count?: number;
+}
+
 export interface IImageUploadProps {
   id: string;
   center: boolean;
@@ -73,9 +81,4 @@ export interface IModalOverlayProps {
 export interface IModalProps extends IModalOverlayProps {
   show: boolean;
   onCancel: () => React.ReactNode;
-}
-
-export interface IErrorModalProps extends IModalOverlayProps {
-  error: string;
-  onClear: () => React.ReactNode;
 }
