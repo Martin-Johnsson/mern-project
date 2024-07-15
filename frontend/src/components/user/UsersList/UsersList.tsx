@@ -1,8 +1,10 @@
-import UserItem from '../UserItem/UserItem';
-import Card from '../../../shared/components/UIElements/Card/Card';
 import './UsersList.css';
 
-const UsersList = (props) => {
+import UserItem from '../UserItem/UserItem';
+import Card from '../../../shared/components/UIElements/Card/Card';
+import { IUserListProps } from '../../../types/interfaces';
+
+const UsersList = (props: IUserListProps) => {
   if (props.items.length === 0) {
     return (
       <div className='center'>

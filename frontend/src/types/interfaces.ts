@@ -1,3 +1,14 @@
+interface IUserList {
+  id: string;
+  image: string;
+  name: string;
+  places: [];
+}
+
+export interface IUserListProps {
+  items: IUserList[];
+}
+
 export interface IImageUploadProps {
   id: string;
   center: boolean;
@@ -34,7 +45,7 @@ export interface IAvatarProps {
   style?: React.CSSProperties;
   image: string;
   alt: string;
-  width: string;
+  width?: string;
 }
 
 export interface IBackdropProps {
@@ -62,4 +73,9 @@ export interface IModalOverlayProps {
 export interface IModalProps extends IModalOverlayProps {
   show: boolean;
   onCancel: () => React.ReactNode;
+}
+
+export interface IErrorModalProps extends IModalOverlayProps {
+  error: string;
+  onClear: () => React.ReactNode;
 }
