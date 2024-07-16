@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
 
 import './Button.css';
+import { IButtonProps } from '../../../../types/interfaces';
 
-const Button = (props) => {
+const Button: React.FC<IButtonProps> = (props) => {
   if (props.href) {
     return (
       <a
-        className={`button button--${props.size || 'default'} ${
+        className={`button button--${props.size ?? 'default'} ${
           props.inverse && 'button--inverse'
         } ${props.danger && 'button--danger'}`}
         href={props.href}
@@ -19,8 +20,7 @@ const Button = (props) => {
     return (
       <Link
         to={props.to}
-        exact={props.exact}
-        className={`button button--${props.size || 'default'} ${
+        className={`button button--${props.size ?? 'default'} ${
           props.inverse && 'button--inverse'
         } ${props.danger && 'button--danger'}`}
       >
@@ -30,7 +30,7 @@ const Button = (props) => {
   }
   return (
     <button
-      className={`button button--${props.size || 'default'} ${
+      className={`button button--${props.size ?? 'default'} ${
         props.inverse && 'button--inverse'
       } ${props.danger && 'button--danger'}`}
       type={props.type}

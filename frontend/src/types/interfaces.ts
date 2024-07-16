@@ -17,6 +17,19 @@ export interface IUserItemProps {
   count?: number;
 }
 
+export interface IButtonProps {
+  href?: string;
+  to?: string;
+  exact?: boolean;
+  size?: string;
+  inverse?: boolean;
+  danger?: boolean;
+  children?: React.ReactNode;
+  type: 'button' | 'submit' | 'reset';
+  onClick?: () => void;
+  disabled?: boolean;
+}
+
 export interface IImageUploadProps {
   id: string;
   center: boolean;
