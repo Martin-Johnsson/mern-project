@@ -94,3 +94,7 @@ export interface IGoogleMapProps {
   center: { lat: number; lng: number };
   zoom: number;
 }
+
+export interface ILoadingSpinnerProps {
+  asOverlay?: boolean;
+}
