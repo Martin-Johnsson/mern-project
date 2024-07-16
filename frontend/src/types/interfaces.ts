@@ -87,3 +87,10 @@ export interface IErrorModalProps extends IModalOverlayProps {
   error: string;
   onClear: () => React.ReactNode;
 }
+
+export interface IGoogleMapProps {
+  className?: string;
+  style?: React.CSSProperties;
+  center: { lat: number; lng: number };
+  zoom: number;
+}

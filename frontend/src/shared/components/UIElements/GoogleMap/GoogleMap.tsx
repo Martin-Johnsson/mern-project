@@ -1,8 +1,9 @@
 import { useRef, useEffect } from 'react';
 import './GoogleMap.css';
+import { IGoogleMapProps } from '../../../../types/Interfaces';
 
-const GoogleMap = (props) => {
-  const mapRef = useRef(null);
+const GoogleMap: React.FC<IGoogleMapProps> = (props) => {
+  const mapRef = useRef<HTMLDivElement | null>(null);
 
   const { center, zoom } = props;
 
