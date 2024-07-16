@@ -57,7 +57,7 @@ export interface IAvatarProps {
 }
 
 export interface IBackdropProps {
-  onClick?: () => React.ReactNode;
+  onClick?: () => React.ReactNode | void;
 }
 
 export interface ICardProps {
@@ -81,4 +81,9 @@ export interface IModalOverlayProps {
 export interface IModalProps extends IModalOverlayProps {
   show: boolean;
   onCancel: () => React.ReactNode;
+}
+
+export interface IErrorModalProps extends IModalOverlayProps {
+  error: string;
+  onClear: () => React.ReactNode;
 }
