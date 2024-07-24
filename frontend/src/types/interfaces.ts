@@ -124,6 +124,28 @@ export interface IAuthContext {
   logout: (userId: null | string, token: null | string) => object;
 }
 
+export interface IPlace {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  address: string;
+  creator: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+}
+
+export interface IResponseData {
+  message: string;
+  data?: object[];
+  place?: IPlace;
+  places: [] | IPlace[];
+  userId: string | null;
+  token?: string | null;
+}
+
 export interface IValidators {
   type: string;
   validateBy: number;

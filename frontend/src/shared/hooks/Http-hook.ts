@@ -1,18 +1,24 @@
 import { useCallback, useRef, useState, useEffect } from 'react';
+import { IResponseData } from '../../types/interfaces';
 
 export const useHttpClient = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const activeHttpRequests = useRef([]);
+  const activeHttpRequests = useRef<AbortController[]>([]);
 
   const sendRequest = useCallback(
-    async (url, method = 'GET', body = null, headers = {}) => {
+    async (
+      url: string,
+      body: null | FormData | string = null,
+      headers: HeadersInit | undefined = {},
+      method: string = 'GET'
+    ) => {
       setIsLoading(true);
       const httpAbortCtrl = new AbortController();
 
       try {
-        const response = await fetch(url, {
+        const response: Response = await fetch(url, {
           method,
           body,
           headers,
@@ -21,7 +27,7 @@ export const useHttpClient = () => {
 
         activeHttpRequests.current.push(httpAbortCtrl);
 
-        const responseData = await response.json();
+        const responseData: IResponseData = await response.json();
 
         activeHttpRequests.current = activeHttpRequests.current.filter(
           (reqCtrl) => reqCtrl !== httpAbortCtrl
@@ -35,11 +41,15 @@ export const useHttpClient = () => {
         }
         setIsLoading(false);
         return responseData;
-      } catch (err) {
-        setError(err.message || 'Something went wrong, please try again.');
-        setIsLoading(false);
+      } catch (err: unknown) {
+        let errorMessage: string = 'Something went wrong, please try again.';
+        if (err instanceof Error) {
+          errorMessage = err.message;
+          setError(errorMessage);
+          setIsLoading(false);
 
-        throw err;
+          throw err;
+        }
       }
     },
     []
