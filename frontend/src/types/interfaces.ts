@@ -25,7 +25,7 @@ export interface IButtonProps {
   inverse?: boolean;
   danger?: boolean;
   children?: React.ReactNode;
-  type: 'button' | 'submit' | 'reset';
+  type?: 'button' | 'submit' | 'reset';
   onClick?: () => void;
   disabled?: boolean;
 }
@@ -33,7 +33,7 @@ export interface IButtonProps {
 export interface IImageUploadProps {
   id: string;
   center: boolean;
-  errorText: string;
+  errorText?: string;
   onInput: (
     id: string,
     pickedFile: File | undefined,
@@ -48,15 +48,15 @@ export interface IInputState {
 }
 
 export interface IInput {
-  initialValue: string;
-  initialValid: boolean;
+  initialValue?: string;
+  initialValid?: boolean;
   id: string;
   onInput: (id: string, value: string, isValid: boolean) => void;
-  validators: [];
+  validators: [{ type: string }];
   element: string;
-  type: string;
-  placeholder: string;
-  rows: number;
+  type?: string;
+  placeholder?: string;
+  rows?: number;
   label: string;
   errorText: string;
 }
@@ -86,9 +86,9 @@ export interface IModalOverlayProps {
   header?: string;
   onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
   contentClass?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   footerClass?: React.ReactNode;
-  footer: React.ReactNode;
+  footer?: React.ReactNode;
 }
 
 export interface IModalProps extends IModalOverlayProps {
@@ -97,8 +97,8 @@ export interface IModalProps extends IModalOverlayProps {
 }
 
 export interface IErrorModalProps extends IModalOverlayProps {
-  error: string;
-  onClear: () => React.ReactNode;
+  error: string | null;
+  onClear: () => void | React.ReactNode;
 }
 
 export interface IGoogleMapProps {
@@ -110,4 +110,21 @@ export interface IGoogleMapProps {
 
 export interface ILoadingSpinnerProps {
   asOverlay?: boolean;
+}
+
+export interface IMainHeaderProps {
+  children: React.ReactNode;
+}
+
+export interface IAuthContext {
+  isLoggedIn: boolean;
+  userId: null | string;
+  token: null | string;
+  login: (userId: null | string, token: null | string) => object;
+  logout: (userId: null | string, token: null | string) => object;
+}
+
+export interface IValidators {
+  type: string;
+  validateBy: number;
 }

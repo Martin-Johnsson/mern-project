@@ -1,45 +1,68 @@
-const VALIDATOR_TYPE_REQUIRE = 'REQUIRE';
-const VALIDATOR_TYPE_MINLENGTH = 'MINLENGTH';
-const VALIDATOR_TYPE_MAXLENGTH = 'MAXLENGTH';
-const VALIDATOR_TYPE_MIN = 'MIN';
-const VALIDATOR_TYPE_MAX = 'MAX';
-const VALIDATOR_TYPE_EMAIL = 'EMAIL';
-const VALIDATOR_TYPE_FILE = 'FILE';
+import {
+  VALIDATOR_TYPE_EMAIL,
+  VALIDATOR_TYPE_FILE,
+  VALIDATOR_TYPE_MAX,
+  VALIDATOR_TYPE_MAXLENGTH,
+  VALIDATOR_TYPE_MIN,
+  VALIDATOR_TYPE_MINLENGTH,
+  VALIDATOR_TYPE_REQUIRE,
+} from '../../types/constants';
+import {
+  validateEmail,
+  validateMax,
+  validateMaxLength,
+  validateMin,
+  validateMinLength,
+  validateRequire,
+} from './helperFunctions';
 
 export const VALIDATOR_REQUIRE = () => ({ type: VALIDATOR_TYPE_REQUIRE });
 export const VALIDATOR_FILE = () => ({ type: VALIDATOR_TYPE_FILE });
-export const VALIDATOR_MINLENGTH = val => ({
+export const VALIDATOR_MINLENGTH = (validateBy: number) => ({
   type: VALIDATOR_TYPE_MINLENGTH,
-  val: val
+  validateBy: validateBy,
 });
-export const VALIDATOR_MAXLENGTH = val => ({
+export const VALIDATOR_MAXLENGTH = (validateBy: number) => ({
   type: VALIDATOR_TYPE_MAXLENGTH,
-  val: val
+  validateBy: validateBy,
 });
-export const VALIDATOR_MIN = val => ({ type: VALIDATOR_TYPE_MIN, val: val });
-export const VALIDATOR_MAX = val => ({ type: VALIDATOR_TYPE_MAX, val: val });
+export const VALIDATOR_MIN = (validateBy: number) => ({
+  type: VALIDATOR_TYPE_MIN,
+  validateBy: validateBy,
+});
+export const VALIDATOR_MAX = (validateBy: number) => ({
+  type: VALIDATOR_TYPE_MAX,
+  validateBy: validateBy,
+});
+
 export const VALIDATOR_EMAIL = () => ({ type: VALIDATOR_TYPE_EMAIL });
 
-export const validate = (value, validators) => {
+export const validate = (value: string, validators: IValidators[]) => {
   let isValid = true;
   for (const validator of validators) {
-    if (validator.type === VALIDATOR_TYPE_REQUIRE) {
-      isValid = isValid && value.trim().length > 0;
-    }
-    if (validator.type === VALIDATOR_TYPE_MINLENGTH) {
-      isValid = isValid && value.trim().length >= validator.val;
-    }
-    if (validator.type === VALIDATOR_TYPE_MAXLENGTH) {
-      isValid = isValid && value.trim().length <= validator.val;
-    }
-    if (validator.type === VALIDATOR_TYPE_MIN) {
-      isValid = isValid && +value >= validator.val;
-    }
-    if (validator.type === VALIDATOR_TYPE_MAX) {
-      isValid = isValid && +value <= validator.val;
-    }
-    if (validator.type === VALIDATOR_TYPE_EMAIL) {
-      isValid = isValid && /^\S+@\S+\.\S+$/.test(value);
+    switch (validator.type) {
+      case VALIDATOR_TYPE_REQUIRE:
+        isValid = isValid && validateRequire(value.toString());
+        break;
+      case VALIDATOR_TYPE_MINLENGTH:
+        isValid =
+          isValid && validateMinLength(value.toString(), validator.validateBy);
+        break;
+      case VALIDATOR_TYPE_MAXLENGTH:
+        isValid =
+          isValid && validateMaxLength(value.toString(), validator.validateBy);
+        break;
+      case VALIDATOR_TYPE_MIN:
+        isValid = isValid && validateMin(value, validator.validateBy);
+        break;
+      case VALIDATOR_TYPE_MAX:
+        isValid = isValid && validateMax(value, validator.validateBy);
+        break;
+      case VALIDATOR_TYPE_EMAIL:
+        isValid = isValid && validateEmail(value);
+        break;
+      default:
+        return false;
     }
   }
   return isValid;
