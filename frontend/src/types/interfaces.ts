@@ -1,4 +1,4 @@
-interface IUserList {
+export interface IUserList {
   id: string;
   image: string;
   name: string;
@@ -120,30 +120,8 @@ export interface IAuthContext {
   isLoggedIn: boolean;
   userId: null | string;
   token: null | string;
-  login: (userId: null | string, token: null | string) => object;
-  logout: (userId: null | string, token: null | string) => object;
-}
-
-export interface IPlace {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  address: string;
-  creator: string;
-  location: {
-    lat: number;
-    lng: number;
-  };
-}
-
-export interface IResponseData {
-  message: string;
-  data?: object[];
-  place?: IPlace;
-  places: [] | IPlace[];
-  userId: string | null;
-  token?: string | null;
+  login: (userId: string, token: string, expirationDate: Date) => void;
+  logout: () => void;
 }
 
 export interface IValidators {

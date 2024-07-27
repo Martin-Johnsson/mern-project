@@ -1,6 +1,8 @@
-import { createContext } from 'react';
+import { createContext, Context } from 'react';
 
-export const AuthContext = createContext({
+import { IAuthContext } from '../../types/interfaces';
+
+export const AuthContext: Context<IAuthContext> = createContext<IAuthContext>({
   isLoggedIn: false,
   userId: null,
   token: null,
