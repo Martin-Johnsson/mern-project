@@ -6,9 +6,10 @@ import {
   UnAuthenticatedRoutes,
 } from './routes/RoutesArray';
 import { AuthContext } from './shared/context/auth-context';
+import { useMemo } from 'react';
 
 const App = () => {
-  let router;
+  let router: ReturnType<typeof createBrowserRouter>;
   const { token, login, logout, userId } = useAuth();
 
   if (token) {
@@ -17,16 +18,20 @@ const App = () => {
     router = createBrowserRouter(UnAuthenticatedRoutes, {});
   }
 
+  const authContextValues = useMemo(
+    () => ({
+      isLoggedIn: !!token,
+      token: token,
+      userId: userId,
+
+      login: login,
+      logout: logout,
+    }),
+    [token, userId, login, logout]
+  );
+
   return (
-    <AuthContext.Provider
-      value={{
-        isLoggedIn: !!token,
-        token: token,
-        login: login,
-        userId: userId,
-        logout: logout,
-      }}
-    >
+    <AuthContext.Provider value={authContextValues}>
       <RouterProvider router={router} />
     </AuthContext.Provider>
   );
