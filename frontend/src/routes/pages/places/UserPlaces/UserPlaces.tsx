@@ -1,30 +1,34 @@
 import { useParams } from 'react-router-dom';
-import PlaceList from '../../../../components/places/PlaceList/PlaceList';
-import { useHttpClient } from '../../../../shared/hooks/Http-hook';
 import { useEffect, useState } from 'react';
+
+import PlaceList from '../../../../components/places/PlaceList/PlaceList';
+import { useHttpClient } from '../../../../shared/hooks/Http-hook/Http-hook';
 import LoadingSpinner from '../../../../shared/components/UIElements/LoadingSpinner/LoadingSpinner';
 import ErrorModal from '../../../../shared/components/UIElements/ErrorModal/ErrorModal';
+import { IPlace, IResponseData } from '../../../../types/interfaces';
 
 const UserPlaces = () => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const BACKEND_URL: string = import.meta.env.VITE_BACKEND_URL;
 
-  const userId = useParams().userId;
+  const userId: string | undefined = useParams().userId;
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [loadedPlaces, setLoadedPlaces] = useState([]);
+  const [loadedPlaces, setLoadedPlaces] = useState<[] | IPlace[]>([]);
 
   useEffect(() => {
     const fetchUserPlaces = async () => {
       try {
-        const responseData = await sendRequest(
+        const responseData: IResponseData | undefined = await sendRequest(
           BACKEND_URL + `/places/user/${userId}`
         );
-        setLoadedPlaces(responseData.places);
-      } catch (err) {}
+        setLoadedPlaces(responseData?.places || []);
+      } catch (err) {
+        console.error(err);
+      }
     };
     fetchUserPlaces();
-  }, [sendRequest, userId]);
+  }, [sendRequest, BACKEND_URL, userId]);
 
-  const placeDeletedHandler = (deletedPlaceId) => {
+  const placeDeletedHandler = (deletedPlaceId: string) => {
     setLoadedPlaces((prevPlaces) =>
       prevPlaces.filter((place) => place.id !== deletedPlaceId)
     );

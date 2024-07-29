@@ -134,3 +134,23 @@ export interface IResponseData {
   places: IPlace[];
   users: IUserList[];
 }
+
+export interface IPlace {
+  items: IPlace[];
+  key: string;
+  id: string;
+  image: string;
+  title: string;
+  description: string;
+  address: string;
+  creatorId: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  creator: string;
+}
+export interface IPlaceItemProps {
+  items: IPlace[];
+  onDelete: (deletedPlaceId: string) => void;
+}
