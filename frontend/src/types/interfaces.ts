@@ -98,7 +98,7 @@ export interface IModalProps extends IModalOverlayProps {
 
 export interface IErrorModalProps extends IModalOverlayProps {
   error: string | null;
-  onClear: () => void | React.ReactNode;
+  onClear: () => React.ReactNode | void;
 }
 
 export interface IGoogleMapProps {
@@ -127,4 +127,10 @@ export interface IAuthContext {
 export interface IValidators {
   type: string;
   validateBy: number;
+}
+
+export interface IResponseData {
+  message?: string;
+  places: IPlace[];
+  users: IUserList[];
 }
