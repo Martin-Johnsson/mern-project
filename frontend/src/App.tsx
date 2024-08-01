@@ -1,12 +1,15 @@
-import './index.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { useMemo, Suspense } from 'react';
+
+import './index.css';
+
 import { useAuth } from './shared/hooks/auth-hook/auth-hook';
 import {
   AuthenticatedRoutes,
   UnAuthenticatedRoutes,
-} from './routes/RoutesArray';
+} from './routes/routeArrays/RouteArrays';
 import { AuthContext } from './shared/context/auth-context';
-import { useMemo } from 'react';
+import LoadingSpinner from './shared/components/UIElements/LoadingSpinner/LoadingSpinner';
 
 const App = () => {
   let router: ReturnType<typeof createBrowserRouter>;
@@ -32,7 +35,11 @@ const App = () => {
 
   return (
     <AuthContext.Provider value={authContextValues}>
-      <RouterProvider router={router} />
+      <main>
+        <Suspense fallback={<LoadingSpinner />}>
+          <RouterProvider router={router} />
+        </Suspense>
+      </main>
     </AuthContext.Provider>
   );
 };

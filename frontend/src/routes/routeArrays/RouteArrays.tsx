@@ -1,11 +1,15 @@
 import { RouteObject, Navigate } from 'react-router-dom';
+import { lazy } from 'react';
 
-import Users from './pages/users/Users';
-import NewPlace from './pages/places/NewPlace/NewPlace';
-import BaseLayout from '../shared/Layout/Layout';
-import UserPlaces from './pages/places/UserPlaces/UserPlaces';
-import UpdatePlace from './pages/places/UpdatePlace/UpdatePlace';
-import Auth from './pages/auth/Auth';
+import Users from '../pages/users/Users';
+import BaseLayout from '../../shared/Layout/Layout';
+
+const UserPlaces = lazy(() => import('../pages/places/UserPlaces/UserPlaces'));
+const NewPlace = lazy(() => import('../pages/places/NewPlace/NewPlace'));
+const UpdatePlace = lazy(
+  () => import('../pages/places/UpdatePlace/UpdatePlace')
+);
+const Auth = lazy(() => import('../pages/auth/Auth'));
 
 export const AuthenticatedRoutes: RouteObject[] = [
   {
