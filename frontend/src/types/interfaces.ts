@@ -124,11 +124,6 @@ export interface IAuthContext {
   logout: () => void;
 }
 
-export interface IValidators {
-  type: string;
-  validateBy: number;
-}
-
 export interface IResponseData {
   message?: string;
   places: IPlace[];
@@ -149,8 +144,4 @@ export interface IPlace {
     lng: number;
   };
   creator: string;
-}
-export interface IPlaceItemProps {
-  items: IPlace[];
-  onDelete: (deletedPlaceId: string) => void;
 }
