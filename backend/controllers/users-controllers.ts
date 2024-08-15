@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { Result, ValidationError, validationResult } from 'express-validator';
 import { Document } from 'mongoose';
 
-const HttpError = require('../models/http-error');
+import HttpError from '../models/http-error';
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -30,7 +30,7 @@ export const getUsers = async (
   try {
     users = await User.find({}, '-password');
   } catch (err: unknown) {
-    const error: null | Response = new HttpError(
+    const error: Error = new HttpError(
       'Fetching users failed, please try again later.',
       500
     );
@@ -110,7 +110,7 @@ export const createUser = async (
         userId: createdUser.id,
         email: createdUser.email,
       },
-      process.env.JWT_SECRET,
+      process.env.JWT_KEY,
       { expiresIn: '1h' }
     );
   } catch (err: unknown) {
@@ -178,7 +178,7 @@ export const loginUser = async (
   try {
     token = jwt.sign(
       { userId: existingUser.id, email: existingUser.email },
-      process.env.JWT_SECRET,
+      process.env.JWT_KEY,
       { expiresIn: '1h' }
     );
   } catch (err: unknown) {

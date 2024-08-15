@@ -35,9 +35,10 @@ const fileUpload = multer({
   ) => {
     const isValid: boolean = !!MIME_TYPE_MAP[file.mimetype];
 
-    let error: any = isValid ? null : new Error('Invalid mime type!');
+    let error: Error | null = isValid ? null : new Error('Invalid mime type!');
 
-    cb(error, isValid);
+    cb(error as null, isValid);
   },
 });
+
 module.exports = fileUpload;
