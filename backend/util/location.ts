@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { GeoCodeResponse, ICoordinates } from '../types/interfaces/IUpload';
+import { GeoCodeResponse, ICoordinates } from '../types/interfaces/ILocation';
 
 const API_KEY: string | undefined = process.env.GOOGLE_API_KEY;
 
