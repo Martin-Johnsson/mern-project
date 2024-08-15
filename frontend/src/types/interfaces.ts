@@ -1,3 +1,16 @@
+export interface IPlaceItemProps {
+  id: string;
+  image: string;
+  address: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  title: string;
+  description: string;
+  creatorId: string;
+  onDelete: (id: string) => void;
+}
 export interface IUserList {
   id: string;
   image: string;
@@ -93,7 +106,7 @@ export interface IModalOverlayProps {
 
 export interface IModalProps extends IModalOverlayProps {
   show: boolean;
-  onCancel: () => React.ReactNode;
+  onCancel: () => React.ReactNode | void;
 }
 
 export interface IErrorModalProps extends IModalOverlayProps {
@@ -144,4 +157,8 @@ export interface IPlace {
     lng: number;
   };
   creator: string;
+}
+export interface IPlaceItemProps {
+  items: IPlace[];
+  onDelete: (deletedPlaceId: string) => void;
 }

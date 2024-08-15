@@ -1,15 +1,18 @@
+import { useContext, useState } from 'react';
+
 import './PlaceItem.css';
+
+import { IPlaceItemProps } from '../../../types/interfaces';
 import Card from '../../../shared/components/UIElements/Card/Card';
 import Button from '../../../shared/components/FormElements/Button/Button';
-import { useContext, useState } from 'react';
 import Modal from '../../../shared/components/UIElements/Modal/Modal';
 import GoogleMap from '../../../shared/components/UIElements/GoogleMap/GoogleMap';
 import { AuthContext } from '../../../shared/context/auth-context';
-import { useHttpClient } from '../../../shared/hooks/Http-hook';
+import { useHttpClient } from '../../../shared/hooks/Http-hook/Http-hook';
 import ErrorModal from '../../../shared/components/UIElements/ErrorModal/ErrorModal';
 import LoadingSpinner from '../../../shared/components/UIElements/LoadingSpinner/LoadingSpinner';
 
-const PlaceItem = (props) => {
+const PlaceItem = (props: IPlaceItemProps) => {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const BACKEND_ASSET_URL = import.meta.env.VITE_BACKEND_ASSET_URL;
 
@@ -28,15 +31,23 @@ const PlaceItem = (props) => {
     setShowConfirmModal(false);
   };
 
-  const confirmDeleteHandler = async (event) => {
+  const confirmDeleteHandler = async () => {
     setShowConfirmModal(false);
 
     try {
-      await sendRequest(BACKEND_URL + `/places/${props.id}`, 'DELETE', null, {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + auth.token,
-      });
-    } catch (err) {}
+      await sendRequest(
+        BACKEND_URL + `/places/${props.id}`,
+
+        null,
+        {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + auth.token,
+        },
+        'DELETE'
+      );
+    } catch (err) {
+      console.error(err);
+    }
     props.onDelete(props.id);
   };
 
