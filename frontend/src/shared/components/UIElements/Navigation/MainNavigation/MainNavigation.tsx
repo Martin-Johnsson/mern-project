@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
-import MainHeader from '../MainHeader/MainHeader';
+import { useState } from 'react';
+
 import './MainNavigation.css';
+
+import MainHeader from '../MainHeader/MainHeader';
 import NavLinks from '../NavLinks/NavLinks';
 import SideDrawer from '../SideDrawer/SideDrawer';
-import { useState } from 'react';
 import Backdrop from '../../Backdrop/Backdrop';
 
-const MainNavigation = (props) => {
-  const [drawerIsOpen, setDrawerIsOpen] = useState(false);
+const MainNavigation: React.FC = () => {
+  const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false);
 
   const openDrawerHandler = () => {
     setDrawerIsOpen(true);
@@ -47,4 +49,5 @@ const MainNavigation = (props) => {
     </>
   );
 };
+
 export default MainNavigation;

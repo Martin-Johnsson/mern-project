@@ -1,9 +1,8 @@
 import ReactDOM from 'react-dom';
 
 import './Backdrop.css';
-import { IBackdropProps } from '../../../../types/Interfaces';
 
-
+import { IBackdropProps } from '../../../../types/interfaces';
 
 const Backdrop: React.FC<IBackdropProps> = (props) => {
   const backdropHook = document.getElementById('backdrop-hook')!;

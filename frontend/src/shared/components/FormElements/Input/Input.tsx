@@ -1,7 +1,9 @@
 import { useReducer, useEffect, ChangeEvent } from 'react';
+
 import './Input.css';
+
 import { validate } from '../../../util/validators';
-import { IInput, IInputState } from '../../../../types/Interfaces';
+import { IInput, IInputState } from '../../../../types/interfaces';
 import { TInputAction } from '../../../../types/types';
 
 const inputReducer = (

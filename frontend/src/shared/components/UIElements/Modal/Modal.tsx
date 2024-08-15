@@ -1,8 +1,9 @@
 import ReactDOM from 'react-dom';
 
-import Backdrop from '../Backdrop/Backdrop';
 import './Modal.css';
-import { IModalOverlayProps, IModalProps } from '../../../../types/Interfaces';
+
+import Backdrop from '../Backdrop/Backdrop';
+import { IModalOverlayProps, IModalProps } from '../../../../types/interfaces';
 
 const ModalOverlay: React.FC<IModalOverlayProps> = (props) => {
   const content: JSX.Element = (

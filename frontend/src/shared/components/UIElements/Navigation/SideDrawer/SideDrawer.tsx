@@ -1,7 +1,7 @@
 import { useRef } from 'react';
-import './SideDrawer.css';
-
 import ReactDOM from 'react-dom';
+
+import './SideDrawer.css';
 
 interface ISideDrawerProps {
   onClick: () => void;

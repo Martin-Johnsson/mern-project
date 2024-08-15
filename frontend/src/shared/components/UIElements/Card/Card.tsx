@@ -1,5 +1,6 @@
-import { ICardProps } from '../../../../types/Interfaces';
 import './Card.css';
+
+import { ICardProps } from '../../../../types/interfaces';
 
 const Card: React.FC<ICardProps> = (props) => {
   return (

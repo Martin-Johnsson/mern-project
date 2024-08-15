@@ -1,6 +1,6 @@
-import { IAvatarProps } from '../../../../types/Interfaces';
-
 import './Avatar.css';
+
+import { IAvatarProps } from '../../../../types/interfaces.ts';
 
 const Avatar: React.FC<IAvatarProps> = (props) => {
   return (

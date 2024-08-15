@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import './Button.css';
+
 import { IButtonProps } from '../../../../types/interfaces';
 
 const Button: React.FC<IButtonProps> = (props) => {
