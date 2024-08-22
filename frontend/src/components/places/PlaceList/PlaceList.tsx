@@ -1,10 +1,12 @@
-import './PlaceList.css';
 import Card from '../../../shared/components/UIElements/Card/Card';
 import PlaceItem from '../PlaceItem/PlaceItem';
 import Button from '../../../shared/components/FormElements/Button/Button';
+import { IPlace, IPlaceItemProps } from '../../../types/interfaces';
 
-const PlaceList = (props) => {
-  if (props.items.length === 0) {
+import './PlaceList.css';
+
+const PlaceList = (props: IPlaceItemProps) => {
+  if (props.items?.length === 0) {
     return (
       <div className='place-list center'>
         <Card>
@@ -16,7 +18,7 @@ const PlaceList = (props) => {
   } else {
     return (
       <ul className='place-list'>
-        {props.items.map((place) => {
+        {props.items?.map((place: IPlace) => {
           return (
             <PlaceItem
               key={place.id}

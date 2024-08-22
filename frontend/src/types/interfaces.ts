@@ -159,6 +159,6 @@ export interface IPlace {
   creator: string;
 }
 export interface IPlaceItemProps {
-  items: IPlace[];
+  items?: IPlace[];
   onDelete: (deletedPlaceId: string) => void;
 }
