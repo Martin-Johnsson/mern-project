@@ -141,6 +141,7 @@ export interface IResponseData {
   message?: string;
   places: IPlace[];
   users: IUserList[];
+  place: IPlace;
 }
 
 export interface IPlace {
