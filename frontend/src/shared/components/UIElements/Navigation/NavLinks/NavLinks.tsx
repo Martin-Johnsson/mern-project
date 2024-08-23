@@ -32,7 +32,7 @@ const NavLinks = () => {
         <li>
           <button
             onClick={() => {
-              auth.logout(null, null);
+              auth.logout();
             }}
           >
             LOGOUT
