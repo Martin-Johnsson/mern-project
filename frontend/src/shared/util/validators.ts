@@ -7,6 +7,7 @@ import {
   VALIDATOR_TYPE_MINLENGTH,
   VALIDATOR_TYPE_REQUIRE,
 } from '../../types/constants';
+import { IValidator } from '../../types/interfaces';
 import {
   validateEmail,
   validateMax,
@@ -37,7 +38,7 @@ export const VALIDATOR_MAX = (validateBy: number) => ({
 
 export const VALIDATOR_EMAIL = () => ({ type: VALIDATOR_TYPE_EMAIL });
 
-export const validate = (value: string, validators: IValidators[]) => {
+export const validate = (value: string, validators: IValidator[]) => {
   let isValid = true;
   for (const validator of validators) {
     switch (validator.type) {

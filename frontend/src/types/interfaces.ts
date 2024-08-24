@@ -1,3 +1,5 @@
+import { ValidatorType } from './types';
+
 export interface IPlaceItemProps {
   id: string;
   image: string;
@@ -65,13 +67,13 @@ export interface IInput {
   initialValid?: boolean;
   id: string;
   onInput: (id: string, value: string, isValid: boolean) => void;
-  validators: [{ type: string }];
   element: string;
   type?: string;
   placeholder?: string;
   rows?: number;
   label: string;
   errorText: string;
+  validators: [];
 }
 
 export interface IAvatarProps {
@@ -168,4 +170,9 @@ export interface IPlace {
 export interface IPlaceItemProps {
   items?: IPlace[];
   onDelete: (deletedPlaceId: string) => void;
+}
+
+export interface IValidator {
+  type: ValidatorType;
+  validateBy: number;
 }

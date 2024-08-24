@@ -1,4 +1,4 @@
-import { useReducer, useEffect, ChangeEvent } from 'react';
+import { useReducer, useEffect } from 'react';
 
 import './Input.css';
 
@@ -29,7 +29,7 @@ const inputReducer = (
 
 const Input: React.FC<IInput> = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: props.initialValue || '',
+    value: props.initialValue ?? '',
     isValid: false,
     isTouched: props.initialValid || false,
   });
@@ -40,13 +40,11 @@ const Input: React.FC<IInput> = (props) => {
     onInput(props.id, inputState.value, inputState.isValid);
   }, [onInput, inputState.value, inputState.isValid, props.id]);
 
-  const changeHandler = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const changeHandler = () => {
     dispatch({
       type: 'CHANGE',
-      val: event.target.value,
       validators: props.validators,
+      val: '',
     });
   };
 
