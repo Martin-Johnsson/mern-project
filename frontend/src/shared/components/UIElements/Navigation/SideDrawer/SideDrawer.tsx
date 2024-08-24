@@ -3,10 +3,7 @@ import ReactDOM from 'react-dom';
 
 import './SideDrawer.css';
 
-interface ISideDrawerProps {
-  onClick: () => void;
-  children: React.ReactNode;
-}
+import { ISideDrawerProps } from '../../../../../types/interfaces';
 
 const SideDrawer = (props: ISideDrawerProps) => {
   const nodeRef = useRef<null | HTMLElement>(null);

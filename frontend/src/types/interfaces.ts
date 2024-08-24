@@ -129,6 +129,12 @@ export interface IMainHeaderProps {
   children: React.ReactNode;
 }
 
+export interface ISideDrawerProps {
+  onClick: () => void;
+  children: React.ReactNode;
+  show: boolean;
+}
+
 export interface IAuthContext {
   isLoggedIn: boolean;
   userId: null | string;
