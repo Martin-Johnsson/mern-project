@@ -149,6 +149,7 @@ export interface IFormState {
   inputs: {
     email?: { value: string; isValid: boolean };
     password?: { value: string; isValid: boolean };
+    address?: {value: string, isValid: boolean}
     name?: { value: string; isValid: boolean };
     image?: { value: string; isValid: boolean };
     title?: { value: string; isValid: boolean };

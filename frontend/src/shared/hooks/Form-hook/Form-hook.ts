@@ -1,9 +1,17 @@
 import { useCallback, useReducer } from 'react';
 
 import { IFormState } from '../../../types/interfaces';
-import { IFormAction } from '../../../types/types';
 
-const formReducer = (state: IFormState, action: IFormAction) => {
+export type TFormAction =
+  | {
+      type: 'INPUT_CHANGE';
+      inputId: keyof IFormState;
+      value: string;
+      isValid: boolean;
+    }
+  | { type: 'SET_DATA'; inputs: IFormState; formIsValid: boolean };
+
+const formReducer = (state: IFormState, action: TFormAction) => {
   let formIsValid = true;
 
   switch (action.type) {
@@ -44,9 +52,6 @@ export const useForm = (
   initialFormValidity: boolean
 ) => {
   const [formState, dispatch] = useReducer(formReducer, {
-    inputs: initialInputs,
-    isValid: initialFormValidity,
-  });
 
   const inputHandler = useCallback(
     (id: keyof IFormState['inputs'], value: string, isValid: boolean) => {
@@ -57,7 +62,7 @@ export const useForm = (
         inputId: id,
       });
     },
-    []
+    [dispatch]
   );
 
   const setFormData = useCallback(
