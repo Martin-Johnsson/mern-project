@@ -1,3 +1,5 @@
+import { useState, useContext, FormEvent } from 'react';
+
 import './Auth.css';
 import Input from '../../../shared/components/FormElements/Input/Input';
 import { useForm } from '../../../shared/hooks/Form-hook/Form-hook';
@@ -8,11 +10,10 @@ import {
   VALIDATOR_REQUIRE,
 } from '../../../shared/util/validators';
 import Card from '../../../shared/components/UIElements/Card/Card';
-import { useState, useContext } from 'react';
 import { AuthContext } from '../../../shared/context/auth-context';
 import LoadingSpinner from '../../../shared/components/UIElements/LoadingSpinner/LoadingSpinner';
 import ErrorModal from '../../../shared/components/UIElements/ErrorModal/ErrorModal';
-import { useHttpClient } from '../../../shared/hooks/Http-hook';
+import { useHttpClient } from '../../../shared/hooks/Http-hook/Http-hook';
 import ImageUpload from '../../../shared/components/FormElements/ImageUpload/ImageUpload';
 
 const Auth = () => {
@@ -22,22 +23,24 @@ const Auth = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-  const authSubmitHandler = async (event) => {
+  const authSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (isLoginMode) {
       try {
         const responseData = await sendRequest(
           BACKEND_URL + '/users/login',
-          'POST',
           JSON.stringify({
             email: formState.inputs.email.value,
             password: formState.inputs.password.value,
           }),
-          { 'Content-Type': 'application/json' }
+          { 'Content-Type': 'application/json' },
+          'POST'
         );
-        auth.login(responseData.userId, responseData.token);
-      } catch (err) {}
+        auth.login(responseData?.userId ?? '', responseData?.token ?? '');
+      } catch (err) {
+        console.error(err);
+      }
     } else {
       try {
         const formData = new FormData();
@@ -47,11 +50,14 @@ const Auth = () => {
         formData.append('image', formState.inputs.image.value);
         const responseData = await sendRequest(
           BACKEND_URL + '/users/signup',
-          'POST',
-          formData
+          formData,
+          {},
+          'POST'
         );
-        auth.login(responseData.userId, responseData.token);
-      } catch (err) {}
+        auth.login(responseData?.userId ?? '', responseData?.token ?? '');
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 

@@ -20,4 +20,4 @@ export type IFormAction =
       value: string;
       isValid: boolean;
     }
-  | { type: 'SET_DATA'; inputs: IFormState['inputs']; formIsValid: boolean };
+  | { type: 'SET_DATA'; inputs: IFormState; formIsValid: boolean };

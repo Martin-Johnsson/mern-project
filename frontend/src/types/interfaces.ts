@@ -73,7 +73,7 @@ export interface IInput {
   rows?: number;
   label: string;
   errorText: string;
-  validators: [];
+  validators: [{ type: string }];
 }
 
 export interface IAvatarProps {
