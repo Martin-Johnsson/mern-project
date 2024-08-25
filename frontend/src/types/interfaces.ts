@@ -141,11 +141,25 @@ export interface IAuthContext {
   isLoggedIn: boolean;
   userId: null | string;
   token: null | string;
-  login: (userId: string, token: string, expirationDate: Date) => void;
+  login: (userId: string, token: string, expirationDate?: Date) => void;
   logout: () => void;
 }
 
+export interface IFormState {
+  inputs: {
+    email?: { value: string; isValid: boolean };
+    password?: { value: string; isValid: boolean };
+    name?: { value: string; isValid: boolean };
+    image?: { value: string; isValid: boolean };
+    title?: { value: string; isValid: boolean };
+    description?: { value: string; isValid: boolean };
+  };
+  isValid: boolean;
+}
+
 export interface IResponseData {
+  userId?: string;
+  token?: string;
   message?: string;
   places: IPlace[];
   users: IUserList[];
