@@ -11,8 +11,9 @@ export interface IPlaceItemProps {
   title?: string;
   description?: string;
   creatorId?: string;
-  onDelete: (id: string) => void;
-}
+  onDelete: (id: string | undefined) => void;
+  items: [] | IPlace[]
+} 
 export interface IUserList {
   id: string;
   image: string;
@@ -119,7 +120,7 @@ export interface IErrorModalProps extends IModalOverlayProps {
 export interface IGoogleMapProps {
   className?: string;
   style?: React.CSSProperties;
-  center: { lat: number; lng: number };
+  center?: { lat: number; lng: number };
   zoom: number;
 }
 
@@ -182,11 +183,6 @@ export interface IPlace {
   };
   creator: string;
 }
-export interface IPlaceItemProps {
-  items?: IPlace[];
-  onDelete: (deletedPlaceId: string) => void;
-}
-
 export interface IValidator {
   type: ValidatorType;
   validateBy: number;

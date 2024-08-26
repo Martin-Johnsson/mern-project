@@ -28,7 +28,7 @@ const UserPlaces = () => {
     fetchUserPlaces();
   }, [sendRequest, BACKEND_URL, userId]);
 
-  const placeDeletedHandler = (deletedPlaceId: string) => {
+  const placeDeletedHandler = (deletedPlaceId: string | undefined) => {
     setLoadedPlaces((prevPlaces) =>
       prevPlaces.filter((place) => place.id !== deletedPlaceId)
     );
