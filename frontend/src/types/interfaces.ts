@@ -1,16 +1,16 @@
 import { ValidatorType } from './types';
 
 export interface IPlaceItemProps {
-  id: string;
-  image: string;
-  address: string;
-  coordinates: {
+  id?: string;
+  image?: string;
+  address?: string;
+  coordinates?: {
     lat: number;
     lng: number;
   };
-  title: string;
-  description: string;
-  creatorId: string;
+  title?: string;
+  description?: string;
+  creatorId?: string;
   onDelete: (id: string) => void;
 }
 export interface IUserList {
@@ -149,7 +149,7 @@ export interface IFormState {
   inputs: {
     email?: { value: string; isValid: boolean };
     password?: { value: string; isValid: boolean };
-    address?: {value: string, isValid: boolean}
+    address?: { value: string; isValid: boolean };
     name?: { value: string; isValid: boolean };
     image?: { value: string; isValid: boolean };
     title?: { value: string; isValid: boolean };
