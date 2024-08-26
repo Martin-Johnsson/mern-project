@@ -1,3 +1,6 @@
+import { FormEvent, useContext } from 'react';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
+
 import '../../../../assets/PlaceForm.css';
 import Input from '../../../../shared/components/FormElements/Input/Input';
 import {
@@ -6,30 +9,31 @@ import {
 } from '../../../../shared/util/validators';
 import Button from '../../../../shared/components/FormElements/Button/Button';
 import { useForm } from '../../../../shared/hooks/Form-hook/Form-hook';
-import { useHttpClient } from '../../../../shared/hooks/Http-hook';
-import { useContext } from 'react';
+import { useHttpClient } from '../../../../shared/hooks/Http-hook/Http-hook';
 import { AuthContext } from '../../../../shared/context/auth-context';
 import LoadingSpinner from '../../../../shared/components/UIElements/LoadingSpinner/LoadingSpinner';
 import ErrorModal from '../../../../shared/components/UIElements/ErrorModal/ErrorModal';
-import { useNavigate } from 'react-router-dom';
 import ImageUpload from '../../../../shared/components/FormElements/ImageUpload/ImageUpload';
+import { IAuthContext } from '../../../../types/interfaces';
+
 const NewPlace = () => {
-  const auth = useContext(AuthContext);
-  const navigate = useNavigate();
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const auth: IAuthContext = useContext(AuthContext);
+  const navigate: NavigateFunction = useNavigate();
+
+  const BACKEND_URL: string = import.meta.env.VITE_BACKEND_URL;
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, inputHandler] = useForm(
     {
       title: {
-        value: '',
+        value: null,
         isValid: false,
       },
       description: {
-        value: '',
+        value: null,
         isValid: false,
       },
       address: {
-        value: '',
+        value: null,
         isValid: false,
       },
       image: {
@@ -40,7 +44,7 @@ const NewPlace = () => {
     false
   );
 
-  const placeSubmitHandler = async (event) => {
+  const placeSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       const formData = new FormData();
@@ -48,11 +52,18 @@ const NewPlace = () => {
       formData.append('description', formState.inputs.description.value);
       formData.append('address', formState.inputs.address.value);
       formData.append('image', formState.inputs.image.value);
-      await sendRequest(BACKEND_URL + '/places', 'POST', formData, {
-        Authorization: 'Bearer ' + auth.token,
-      });
+      await sendRequest(
+        BACKEND_URL + '/places',
+        formData,
+        {
+          Authorization: 'Bearer ' + auth.token,
+        },
+        'POST'
+      );
       navigate('/');
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (

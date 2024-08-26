@@ -147,13 +147,13 @@ export interface IAuthContext {
 
 export interface IFormState {
   inputs: {
-    email?: { value: string; isValid: boolean };
-    password?: { value: string; isValid: boolean };
-    address?: { value: string; isValid: boolean };
-    name?: { value: string; isValid: boolean };
-    image?: { value: string; isValid: boolean };
-    title?: { value: string; isValid: boolean };
-    description?: { value: string; isValid: boolean };
+    email?: { value: string | null; isValid: boolean };
+    password?: { value: string | null; isValid: boolean };
+    address?: { value: string | null; isValid: boolean };
+    name?: { value: string | null; isValid: boolean };
+    image?: { value: string | null; isValid: boolean };
+    title?: { value: string | null; isValid: boolean };
+    description?: { value: string | null; isValid: boolean };
   };
   isValid: boolean;
 }
