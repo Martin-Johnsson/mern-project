@@ -37,7 +37,11 @@ const Auth = () => {
           { 'Content-Type': 'application/json' },
           'POST'
         );
-        auth.login(responseData?.userId ?? '', responseData?.token ?? '');
+        auth.login(
+          responseData?.userId ?? '',
+          responseData?.token ?? '',
+          new Date()
+        );
       } catch (err) {
         console.error(err);
       }
@@ -54,7 +58,11 @@ const Auth = () => {
           {},
           'POST'
         );
-        auth.login(responseData?.userId ?? '', responseData?.token ?? '');
+        auth.login(
+          responseData?.userId ?? '',
+          responseData?.token ?? '',
+          new Date()
+        );
       } catch (err) {
         console.error(err);
       }
