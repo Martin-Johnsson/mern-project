@@ -12,7 +12,7 @@ export interface IPlaceItemProps {
   description?: string;
   creatorId?: string;
   onDelete: (id: string | undefined) => void;
-  items: [] | IPlace[]
+  items?: [] | IPlace[]
 } 
 export interface IUserList {
   id: string;
