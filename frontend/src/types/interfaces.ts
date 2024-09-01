@@ -1,5 +1,3 @@
-import { ValidatorType } from './types';
-
 export interface IPlaceItemProps {
   id?: string;
   image?: string;
@@ -12,8 +10,8 @@ export interface IPlaceItemProps {
   description?: string;
   creatorId?: string;
   onDelete: (id: string | undefined) => void;
-  items?: [] | IPlace[]
-} 
+  items?: [] | IPlace[];
+}
 export interface IUserList {
   id: string;
   image: string;
@@ -163,9 +161,9 @@ export interface IResponseData {
   userId?: string;
   token?: string;
   message?: string;
-  places: IPlace[];
-  users: IUserList[];
-  place: IPlace;
+  places?: IPlace[];
+  users?: IUserList[];
+  place?: IPlace;
 }
 
 export interface IPlace {
@@ -184,6 +182,6 @@ export interface IPlace {
   creator: string;
 }
 export interface IValidator {
-  type: ValidatorType;
-  validateBy: number;
+  type: string;
+  val?: number;
 }
