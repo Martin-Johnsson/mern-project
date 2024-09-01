@@ -1,14 +1,17 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, ChangeEvent } from 'react';
 
 import './Input.css';
 
 import { validate } from '../../../util/validators';
-import { IInput, IInputState } from '../../../../types/interfaces';
-import { TInputAction } from '../../../../types/types';
+import {
+  IInputAction,
+  IInputProps,
+  IInputState,
+} from '../../../../types/interfaces';
 
 const inputReducer = (
   state: IInputState,
-  action: TInputAction
+  action: IInputAction
 ): IInputState => {
   switch (action.type) {
     case 'CHANGE':
@@ -27,30 +30,35 @@ const inputReducer = (
   }
 };
 
-const Input: React.FC<IInput> = (props) => {
+const Input: React.FC<IInputProps> = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: props.initialValue ?? '',
     isValid: false,
     isTouched: props.initialValid || false,
   });
 
-  const { onInput } = props;
+  const { id, onInput } = props;
+  const { value, isValid } = inputState;
 
   useEffect(() => {
-    onInput(props.id, inputState.value, inputState.isValid);
-  }, [onInput, inputState.value, inputState.isValid, props.id]);
+    onInput(id, value, isValid);
+  }, [id, value, isValid, onInput]);
 
-  const changeHandler = () => {
+  const changeHandler = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     dispatch({
       type: 'CHANGE',
+      val: event.target.value,
       validators: props.validators,
-      val: '',
     });
   };
 
   const touchHandler = () => {
     dispatch({
       type: 'TOUCH',
+      val: '',
+      validators: [],
     });
   };
 
@@ -67,7 +75,7 @@ const Input: React.FC<IInput> = (props) => {
     ) : (
       <textarea
         id={props.id}
-        rows={props.rows || 3}
+        rows={props.rows ?? 3}
         onChange={changeHandler}
         value={inputState.value}
         onBlur={touchHandler}

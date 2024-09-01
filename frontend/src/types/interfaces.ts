@@ -61,6 +61,26 @@ export interface IInputState {
   isTouched: boolean;
 }
 
+export interface IInputProps {
+  initialValue?: string;
+  initialValid?: boolean;
+  onInput: (id: string, value: string, isValid: boolean) => void;
+  validators: IValidator[];
+  element: string;
+  id: string;
+  type: string;
+  placeholder?: string;
+  rows?: number;
+  label: string;
+  errorText: string;
+}
+
+export interface IInputAction {
+  type: 'CHANGE' | 'TOUCH';
+  val: string;
+  validators: IValidator[];
+}
+
 export interface IInput {
   initialValue?: string;
   initialValid?: boolean;
