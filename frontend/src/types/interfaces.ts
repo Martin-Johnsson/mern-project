@@ -68,7 +68,7 @@ export interface IInputProps {
   validators: IValidator[];
   element: string;
   id: string;
-  type: string;
+  type?: string;
   placeholder?: string;
   rows?: number;
   label: string;
