@@ -160,7 +160,7 @@ export interface IAuthContext {
   isLoggedIn: boolean;
   userId: null | string;
   token: null | string;
-  login: (userId: string, token: string, expirationDate?: Date) => void;
+  login: (userId: string, token: string, expirationDate: Date) => void;
   logout: () => void;
 }
 
