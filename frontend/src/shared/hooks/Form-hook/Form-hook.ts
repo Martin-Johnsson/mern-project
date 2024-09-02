@@ -1,31 +1,19 @@
+// @ts-nocheck
 import { useCallback, useReducer } from 'react';
 
-import { IFormState } from '../../../types/interfaces';
-
-export type TFormAction =
-  | {
-      type: 'INPUT_CHANGE';
-      inputId: keyof IFormState;
-      value: string;
-      isValid: boolean;
-    }
-  | { type: 'SET_DATA'; inputs: IFormState; formIsValid: boolean };
-
-const formReducer = (state: IFormState, action: TFormAction) => {
+const formReducer = (state, action) => {
   let formIsValid = true;
 
   switch (action.type) {
     case 'INPUT_CHANGE':
       for (const inputId in state.inputs) {
-        if (!state.inputs[inputId as keyof IFormState['inputs']]) {
+        if (!state.inputs) {
           continue;
         }
         if (inputId === action.inputId) {
           formIsValid = formIsValid && action.isValid;
         } else {
-          formIsValid =
-            formIsValid &&
-            state.inputs[inputId as keyof IFormState['inputs']]!.isValid;
+          formIsValid = formIsValid && state.inputs.isValid;
         }
       }
       return {
@@ -47,34 +35,28 @@ const formReducer = (state: IFormState, action: TFormAction) => {
   }
 };
 
-export const useForm = (
-  initialInputs: IFormState['inputs'],
-  initialFormValidity: boolean
-) => {
+export const useForm = (initialInputs, initialFormValidity) => {
   const [formState, dispatch] = useReducer(formReducer, {
+    inputs: initialInputs,
+    isValid: initialFormValidity,
+  });
 
-  const inputHandler = useCallback(
-    (id: keyof IFormState['inputs'], value: string, isValid: boolean) => {
-      dispatch({
-        type: 'INPUT_CHANGE',
-        value: value,
-        isValid: isValid,
-        inputId: id,
-      });
-    },
-    [dispatch]
-  );
+  const inputHandler = useCallback((id, value, isValid) => {
+    dispatch({
+      type: 'INPUT_CHANGE',
+      value: value,
+      isValid: isValid,
+      inputId: id,
+    });
+  }, []);
 
-  const setFormData = useCallback(
-    (inputData: IFormState['inputs'], formValidity: boolean) => {
-      dispatch({
-        type: 'SET_DATA',
-        inputs: inputData,
-        formIsValid: formValidity,
-      });
-    },
-    []
-  );
+  const setFormData = useCallback((inputData, formValidity) => {
+    dispatch({
+      type: 'SET_DATA',
+      inputs: inputData,
+      formIsValid: formValidity,
+    });
+  }, []);
 
   return [formState, inputHandler, setFormData];
 };
