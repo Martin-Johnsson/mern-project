@@ -1,4 +1,4 @@
-# Mern Project
+# YourPlaces
 
 ## Table of Contents
 
@@ -12,11 +12,13 @@
 
 ## Introduction
 
+The project is created for expanding my knowledge in the React and Node ecosystem, build API, integrating external APIs and utilize MongoDB.
+
 ## Features
 
-## Installation
+Community for uploading, viewing and sharing places.
 
-## Table of Contents
+## Installation
 
 # Usage
 
