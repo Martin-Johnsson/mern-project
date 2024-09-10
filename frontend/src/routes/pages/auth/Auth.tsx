@@ -1,8 +1,9 @@
 import { useState, useContext, FormEvent } from 'react';
 
 import './Auth.css';
-import Input from '../../../shared/components/FormElements/Input/Input';
-import { useForm } from '../../../shared/hooks/Form-hook/Form-hook';
+
+import Input from '../../../shared/components/FormElements/Input/Input.tsx';
+import { useForm } from '../../../shared/hooks/Form-hook/Form-hook.ts';
 import Button from '../../../shared/components/FormElements/Button/Button';
 import {
   VALIDATOR_EMAIL,
@@ -37,11 +38,7 @@ const Auth = () => {
           { 'Content-Type': 'application/json' },
           'POST'
         );
-        auth.login(
-          responseData?.userId ?? '',
-          responseData?.token ?? '',
-          new Date()
-        );
+        auth.login(responseData?.userId ?? '', responseData?.token ?? '');
       } catch (err) {
         console.error(err);
       }
