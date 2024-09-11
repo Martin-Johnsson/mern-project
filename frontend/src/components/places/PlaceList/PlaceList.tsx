@@ -6,7 +6,7 @@ import { IPlace, IPlaceItemProps } from '../../../types/interfaces';
 import './PlaceList.css';
 
 const PlaceList = (props: IPlaceItemProps) => {
-  if (props.items?.length === 0) {
+  if (!props.items || props.items.length === 0) {
     return (
       <div className='place-list center'>
         <Card>
@@ -15,10 +15,10 @@ const PlaceList = (props: IPlaceItemProps) => {
         </Card>
       </div>
     );
-  } else {
+  } else if (props.items && props.items.length > 0) {
     return (
       <ul className='place-list'>
-        {props.items?.map((place: IPlace) => {
+        {props.items.map((place: IPlace) => {
           return (
             <PlaceItem
               key={place.id}

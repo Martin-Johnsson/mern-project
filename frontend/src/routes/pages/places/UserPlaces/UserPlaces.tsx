@@ -12,7 +12,7 @@ const UserPlaces = () => {
 
   const userId: string | undefined = useParams().userId;
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [loadedPlaces, setLoadedPlaces] = useState<[] | IPlace[]>([]);
+  const [loadedPlaces, setLoadedPlaces] = useState<null | IPlace[]>(null);
 
   useEffect(() => {
     const fetchUserPlaces = async () => {
@@ -20,7 +20,7 @@ const UserPlaces = () => {
         const responseData: IResponseData | undefined = await sendRequest(
           BACKEND_URL + `/places/user/${userId}`
         );
-        setLoadedPlaces(responseData?.places || []);
+        setLoadedPlaces(responseData?.places ?? null);
       } catch (err) {
         console.error(err);
       }
@@ -29,19 +29,20 @@ const UserPlaces = () => {
   }, [sendRequest, BACKEND_URL, userId]);
 
   const placeDeletedHandler = (deletedPlaceId: string | undefined) => {
-    setLoadedPlaces((prevPlaces) =>
-      prevPlaces.filter((place) => place.id !== deletedPlaceId)
+    setLoadedPlaces(
+      (prevPlaces) =>
+        prevPlaces?.filter((place) => place.id !== deletedPlaceId) ?? null
     );
   };
   return (
-    <>
+    <div className='center'>
       <ErrorModal error={error} onClear={clearError} />
       {isLoading && <LoadingSpinner />}
-      {!isLoading && loadedPlaces.length > 0 && (
+      {!isLoading && loadedPlaces && (
         <PlaceList items={loadedPlaces} onDelete={placeDeletedHandler} />
       )}
       ;
-    </>
+    </div>
   );
 };
 
