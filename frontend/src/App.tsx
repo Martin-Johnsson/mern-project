@@ -36,7 +36,13 @@ const App = () => {
   return (
     <AuthContext.Provider value={authContextValues}>
       <main>
-        <Suspense fallback={<LoadingSpinner />}>
+        <Suspense
+          fallback={
+            <label className='center'>
+              <LoadingSpinner />
+            </label>
+          }
+        >
           <RouterProvider router={router} />
         </Suspense>
       </main>
