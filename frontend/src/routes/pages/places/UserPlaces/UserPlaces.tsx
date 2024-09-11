@@ -41,7 +41,6 @@ const UserPlaces = () => {
       {!isLoading && loadedPlaces && (
         <PlaceList items={loadedPlaces} onDelete={placeDeletedHandler} />
       )}
-      ;
     </div>
   );
 };
