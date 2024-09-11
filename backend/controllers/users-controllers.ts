@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { Result, ValidationError, validationResult } from 'express-validator';
 import { Document } from 'mongoose';
 
-import HttpError from '../models/http-error';
+import {HttpError} from '../models/http-error';
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');

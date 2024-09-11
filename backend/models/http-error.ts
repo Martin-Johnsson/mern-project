@@ -1,4 +1,4 @@
-export default class HttpError extends Error {
+export class HttpError extends Error {
   code: number;
   constructor(message: string, errorCode: number) {
     super(message);
