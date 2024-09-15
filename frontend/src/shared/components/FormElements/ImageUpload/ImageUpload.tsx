@@ -9,14 +9,13 @@ const ImageUpload: React.FC<IImageUploadProps> = (props) => {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isValid, setIsValid] = useState<boolean>(true);
-
   const filePickerRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (!file) {
       return;
     }
-    const fileReader = new FileReader();
+    const fileReader: FileReader = new FileReader();
 
     fileReader.onload = () => {
       if (typeof fileReader.result === 'string') {
@@ -28,8 +27,7 @@ const ImageUpload: React.FC<IImageUploadProps> = (props) => {
   }, [file]);
 
   const pickedHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    let pickedFile;
-    let fileIsValid = isValid;
+    let pickedFile: undefined | File = undefined;
     const fileSizeLimit: number = 500000;
 
     if (
@@ -40,14 +38,12 @@ const ImageUpload: React.FC<IImageUploadProps> = (props) => {
       pickedFile = event.target.files[0];
       setFile(pickedFile);
       setIsValid(true);
-      fileIsValid = true;
     } else {
       setIsValid(false);
       setPreviewUrl(null);
-      fileIsValid = false;
     }
 
-    props.onInput(props.id, pickedFile, fileIsValid);
+    props.onInput(props.id, pickedFile, isValid);
   };
 
   const pickImageHandler = () => {
@@ -67,13 +63,13 @@ const ImageUpload: React.FC<IImageUploadProps> = (props) => {
       <div className={`image-upload ${props.center && 'center'} `}>
         <div className='image-upload__preview'>
           {previewUrl && <img src={previewUrl} alt='Preview' />}
-          {!previewUrl && <p>Please pick an image.</p>}
+          {!previewUrl && (
+            <p className={isValid ? '' : 'image-upload__invalidImage'}>
+              Please pick an image.
+            </p>
+          )}
         </div>
-        <Button
-          type={'button'}
-          danger={isValid ? false : true}
-          onClick={pickImageHandler}
-        >
+        <Button type={'button'} danger={!isValid} onClick={pickImageHandler}>
           PICK IMAGE
         </Button>
       </div>
