@@ -2,13 +2,13 @@ import { FormEvent, useContext } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 
 import '../../../../assets/PlaceForm.css';
-import Input from '../../../../shared/components/FormElements/Input/Input';
+import Input from '../../../../shared/components/FormElements/Input/Input.tsx';
 import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
 } from '../../../../shared/util/validators';
 import Button from '../../../../shared/components/FormElements/Button/Button';
-import { useForm } from '../../../../shared/hooks/Form-hook/Form-hook';
+import { useForm } from '../../../../shared/hooks/Form-hook/Form-hook.ts';
 import { useHttpClient } from '../../../../shared/hooks/Http-hook/Http-hook';
 import { AuthContext } from '../../../../shared/context/auth-context';
 import LoadingSpinner from '../../../../shared/components/UIElements/LoadingSpinner/LoadingSpinner';
@@ -79,7 +79,7 @@ const NewPlace = () => {
           id='image'
           center
           onInput={inputHandler}
-          errorText='Please provide an image.'
+          errorText="Please verify you provided an image and it is of type .jpg, .png or .jpeg and doesn't exceed 500MB."
         />
         <Input
           id='title'
