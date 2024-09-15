@@ -3,12 +3,12 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import './ImageUpload.css';
 
 import Button from '../Button/Button';
-import { IImageUploadProps } from '../../../../types/Interfaces';
+import { IImageUploadProps } from '../../../../types/interfaces';
 
 const ImageUpload: React.FC<IImageUploadProps> = (props) => {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [isValid, setIsValid] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(true);
 
   const filePickerRef = useRef<HTMLInputElement | null>(null);
 
@@ -30,14 +30,20 @@ const ImageUpload: React.FC<IImageUploadProps> = (props) => {
   const pickedHandler = (event: ChangeEvent<HTMLInputElement>) => {
     let pickedFile;
     let fileIsValid = isValid;
+    const fileSizeLimit: number = 500000;
 
-    if (event.target?.files && event.target.files.length === 1) {
+    if (
+      event.target?.files &&
+      event.target.files.length === 1 &&
+      event.target.files[0].size < fileSizeLimit
+    ) {
       pickedFile = event.target.files[0];
       setFile(pickedFile);
       setIsValid(true);
       fileIsValid = true;
     } else {
       setIsValid(false);
+      setPreviewUrl(null);
       fileIsValid = false;
     }
 
@@ -63,11 +69,17 @@ const ImageUpload: React.FC<IImageUploadProps> = (props) => {
           {previewUrl && <img src={previewUrl} alt='Preview' />}
           {!previewUrl && <p>Please pick an image.</p>}
         </div>
-        <Button type='button' onClick={pickImageHandler}>
+        <Button
+          type={'button'}
+          danger={isValid ? false : true}
+          onClick={pickImageHandler}
+        >
           PICK IMAGE
         </Button>
       </div>
-      {!isValid && <>{props.errorText}</>}
+      {!isValid && (
+        <div className={'image-upload__invalidImage'}>{props.errorText}</div>
+      )}
     </div>
   );
 };
