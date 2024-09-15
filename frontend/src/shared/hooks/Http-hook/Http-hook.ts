@@ -25,6 +25,7 @@ export const useHttpClient = () => {
           headers,
           signal: httpAbortCtrl.signal,
         });
+        console.log(response.headers);
 
         activeHttpRequests.current.push(httpAbortCtrl);
 
@@ -36,8 +37,9 @@ export const useHttpClient = () => {
 
         if (!response.ok) {
           setIsLoading(false);
+
           throw new Error(
-            responseData.message || 'Something went wrong, please try again.'
+            responseData.message ?? 'Something went wrong, please try again.'
           );
         }
         setIsLoading(false);
