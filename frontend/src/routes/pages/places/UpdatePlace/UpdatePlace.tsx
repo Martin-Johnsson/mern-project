@@ -1,27 +1,34 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import { FormEvent, useContext, useEffect, useState } from 'react';
 
-import Input from '../../../../shared/components/FormElements/Input/Input';
+import Input from '../../../../shared/components/FormElements/Input/Input.tsx';
 import Button from '../../../../shared/components/FormElements/Button/Button';
 import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
 } from '../../../../shared/util/validators';
-import '../../../../assets/PlaceForm.css';
-import { useForm } from '../../../../shared/hooks/Form-hook/Form-hook';
-import { useContext, useEffect, useState } from 'react';
-import { useHttpClient } from '../../../../shared/hooks/Http-hook';
+import { useForm } from '../../../../shared/hooks/Form-hook/Form-hook.ts';
+import { useHttpClient } from '../../../../shared/hooks/Http-hook/Http-hook';
 import LoadingSpinner from '../../../../shared/components/UIElements/LoadingSpinner/LoadingSpinner';
 import ErrorModal from '../../../../shared/components/UIElements/ErrorModal/ErrorModal';
 import Card from '../../../../shared/components/UIElements/Card/Card';
 import { AuthContext } from '../../../../shared/context/auth-context';
+import { IAuthContext } from '../../../../types/interfaces';
+
+import '../../../../assets/PlaceForm.css';
 
 const UpdatePlace = () => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-  const placeId = useParams().placeId;
+  const BACKEND_URL: string = import.meta.env.VITE_BACKEND_URL;
+  const placeId: string | undefined = useParams().placeId;
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [loadedPlace, setLoadedPlace] = useState([]);
-  const navigate = useNavigate();
-  const auth = useContext(AuthContext);
+  const [loadedPlace, setLoadedPlace] = useState<IPlace | undefined>(undefined);
+  const navigate: NavigateFunction = useNavigate();
+  const auth: IAuthContext = useContext(AuthContext);
+
+  interface IPlace {
+    title: string;
+    description: string;
+  }
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -43,35 +50,39 @@ const UpdatePlace = () => {
         const responseData = await sendRequest(
           BACKEND_URL + `/places/${placeId}`
         );
-        setLoadedPlace(responseData.place);
+
+        setLoadedPlace(responseData?.place);
 
         setFormData(
           {
             title: {
-              value: responseData.place?.title,
+              value: responseData?.place?.title,
               isValid: true,
             },
             description: {
-              value: responseData.place?.description,
+              value: responseData?.place?.description,
               isValid: true,
             },
           },
           true
         );
         navigate(``);
-      } catch (err) {}
+      } catch (err) {
+        console.error(err);
+      }
     };
 
     loadPlace();
-  }, [placeId, sendRequest, setFormData]);
+  }, [placeId, sendRequest, setFormData, BACKEND_URL, navigate]);
 
-  const placeUpdateSubmitHandler = async (event) => {
+  const placeUpdateSubmitHandler = async (
+    event: FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
 
     try {
       await sendRequest(
         BACKEND_URL + `/places/${placeId}`,
-        'PATCH',
         JSON.stringify({
           title: formState.inputs.title.value,
           description: formState.inputs.description.value,
@@ -79,10 +90,13 @@ const UpdatePlace = () => {
         {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + auth.token,
-        }
+        },
+        'PATCH'
       );
       navigate(`/${auth.userId}/places`);
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   if (isLoading) {
@@ -113,11 +127,11 @@ const UpdatePlace = () => {
             element='input'
             type='text'
             label='Title'
-            validators={[VALIDATOR_REQUIRE]}
+            validators={[VALIDATOR_REQUIRE()]}
             errorText='Please enter a valid title'
             onInput={inputHandler}
             initialValue={formState.inputs.title.value}
-            initialValid={formState.inputs.title.isValid}
+            initialValid={formState.inputs.title.initialValid}
           />
           <Input
             id='description'
@@ -127,7 +141,7 @@ const UpdatePlace = () => {
             errorText='Please enter a valid description (min. 5 characters).'
             onInput={inputHandler}
             initialValue={formState.inputs.description.value}
-            initialValid={formState.inputs.description.isValid}
+            initialValid={formState.inputs.description.initialValid}
           />
           <Button type='submit' disabled={!formState.isValid}>
             UPDATE PLACE
