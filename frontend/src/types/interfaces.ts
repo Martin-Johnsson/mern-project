@@ -184,6 +184,7 @@ export interface IResponseData {
   places?: IPlace[];
   users?: IUserList[];
   place?: IPlace;
+  user?: IUserList;
 }
 
 export interface IPlace {
@@ -201,7 +202,14 @@ export interface IPlace {
   };
   creator: string;
 }
+
 export interface IValidator {
   type: string;
   val?: number;
 }
+
+export interface IUpdatePlace {
+  title: string;
+  description: string;
+}
+

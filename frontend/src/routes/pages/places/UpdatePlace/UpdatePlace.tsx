@@ -13,7 +13,7 @@ import LoadingSpinner from '../../../../shared/components/UIElements/LoadingSpin
 import ErrorModal from '../../../../shared/components/UIElements/ErrorModal/ErrorModal';
 import Card from '../../../../shared/components/UIElements/Card/Card';
 import { AuthContext } from '../../../../shared/context/auth-context';
-import { IAuthContext } from '../../../../types/interfaces';
+import { IAuthContext, IUpdatePlace } from '../../../../types/interfaces';
 
 import '../../../../assets/PlaceForm.css';
 
@@ -21,14 +21,11 @@ const UpdatePlace = () => {
   const BACKEND_URL: string = import.meta.env.VITE_BACKEND_URL;
   const placeId: string | undefined = useParams().placeId;
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [loadedPlace, setLoadedPlace] = useState<IPlace | undefined>(undefined);
+  const [loadedPlace, setLoadedPlace] = useState<IUpdatePlace | undefined>(
+    undefined
+  );
   const navigate: NavigateFunction = useNavigate();
   const auth: IAuthContext = useContext(AuthContext);
-
-  interface IPlace {
-    title: string;
-    description: string;
-  }
 
   const [formState, inputHandler, setFormData] = useForm(
     {
